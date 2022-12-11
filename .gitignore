@@ -1,0 +1,7 @@
+project.lock.json
+.vscode
+**/bin/
+**/obj/
+**/.git/
+**/.vs/
+**/publish/
