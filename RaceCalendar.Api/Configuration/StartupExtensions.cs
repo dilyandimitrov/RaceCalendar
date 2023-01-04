@@ -42,15 +42,15 @@ namespace RaceCalendar.Api.Configuration
             services.AddScoped<IGetRaceRequestsQuery, GetRaceRequestsQuery>();
             services.AddScoped<IGetRacesByNameIdsQuery, GetRacesByNameIdsQuery>();
             services.AddScoped<IGetRaceDistancesCountQuery, GetRaceDistancesCountQuery>();
-            services.AddScoped<IGetRaceDistancesQuery, GetRaceDistancesQuery>()
-                .Decorate<IGetRaceDistancesQuery, GetRaceDistancesQueryCacheDecorator>();
-            services.AddScoped<IGetRaceInfosQuery, GetRaceInfosQuery>()
-                .Decorate<IGetRaceInfosQuery, GetRaceInfosQueryCacheDecorator>();
+            services.AddScoped<IGetRaceDistancesQuery, GetRaceDistancesQuery>();
+                //.Decorate<IGetRaceDistancesQuery, GetRaceDistancesQueryCacheDecorator>();
+            services.AddScoped<IGetRaceInfosQuery, GetRaceInfosQuery>();
+                //.Decorate<IGetRaceInfosQuery, GetRaceInfosQueryCacheDecorator>();
             services.AddScoped<IGetAllUsersQuery, GetAllUsersQuery>();
             services.AddScoped<IGetUserRacesByUserQuery, GetUserRacesByUserQuery>();
             services.AddScoped<IGetUserSettingsQuery, GetUserSettingsQuery>();
-            services.AddScoped<IGetRacesByRaceIdsQuery, GetRacesByRaceIdsQuery>()
-                .Decorate<IGetRacesByRaceIdsQuery, GetRacesByRaceIdsQueryCacheDecorator>();
+            services.AddScoped<IGetRacesByRaceIdsQuery, GetRacesByRaceIdsQuery>();
+                //.Decorate<IGetRacesByRaceIdsQuery, GetRacesByRaceIdsQueryCacheDecorator>();
             services.AddScoped<IGetImportDataQuery, GetImportDataQuery>();
 
             return services;
