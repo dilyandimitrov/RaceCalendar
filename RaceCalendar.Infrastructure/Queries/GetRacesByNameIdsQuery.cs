@@ -1,5 +1,6 @@
 ﻿using Dapper;
 using Microsoft.Data.SqlClient;
+using NodaTime;
 using RaceCalendar.Domain.Models;
 using RaceCalendar.Domain.Queries;
 using RaceCalendar.Infrastructure.Persistence;
@@ -51,8 +52,8 @@ public class GetRacesByNameIdsQuery : IGetRacesByNameIdsQuery
         public string NameId { get; init; } = default!;
         public string Country { get; init; } = default!;
         public string City { get; init; } = default!;
-        public DateTime? StartDate { get; init; } = default!;
-        public DateTime? EndDate { get; init; } = default!;
+        public LocalDate? StartDate { get; init; } = default!;
+        public LocalDate? EndDate { get; init; } = default!;
         public string Link { get; init; } = default!;
         public string Tags { get; init; } = default!;
         public Terrains Terrain { get; init; } = default!;

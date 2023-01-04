@@ -1,4 +1,5 @@
-﻿using RaceCalendar.Domain.Commands;
+﻿using NodaTime;
+using RaceCalendar.Domain.Commands;
 using RaceCalendar.Domain.Models;
 using RaceCalendar.Domain.Queries;
 using RaceCalendar.Domain.Services.Interfaces;
@@ -77,8 +78,8 @@ public class UserRaceService : IUserRaceService
         }
 
         userRaces.Sort((r1, r2) => DateTime.Compare(
-            r1.Race!.StartDate is not null ? r1.Race.StartDate.Value : DateTime.MinValue,
-            r2.Race!.StartDate is not null ? r2.Race!.StartDate.Value : DateTime.MinValue));
+            r1.Race!.StartDate is not null ? r1.Race.StartDate.Value.ToDateTimeUnspecified() : DateTime.MinValue,
+            r2.Race!.StartDate is not null ? r2.Race!.StartDate.Value.ToDateTimeUnspecified() : DateTime.MinValue));
 
         return userRaces;
     }

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using NodaTime;
+using System;
 using System.Collections.Generic;
 
 namespace RaceCalendar.Domain.Models;
@@ -10,7 +11,7 @@ public class RaceDistance
         int raceId,
         string name,
         double? distance,
-        DateTime? startDate,
+        LocalDate? startDate,
         TimeSpan? startTime,
         int? unconfirmedDate,
         int? elevationGain,
@@ -35,7 +36,7 @@ public class RaceDistance
     public int RaceId { get; set; }
     public string Name { get; set; }
     public double? Distance { get; set; }
-    public DateTime? StartDate { get; set; }
+    public LocalDate? StartDate { get; set; }
     public TimeSpan? StartTime { get; set; }
     public int? UnconfirmedDate { get; set; }
     public int? ElevationGain { get; set; }
@@ -43,6 +44,6 @@ public class RaceDistance
     public string Link { get; set; }
     public string ResultsLink { get; set; }
 
-    public IEnumerable<RaceInfo> Info { get; set; } = default!;
+    public IEnumerable<RaceInfo>? Info { get; set; } = default!;
     public bool IsDateConfirmed => true;
 }

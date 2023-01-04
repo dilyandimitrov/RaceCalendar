@@ -1,5 +1,6 @@
 ﻿using Dapper;
 using Microsoft.Data.SqlClient;
+using NodaTime;
 using RaceCalendar.Domain.Models;
 using RaceCalendar.Domain.Queries;
 using RaceCalendar.Infrastructure.Persistence;
@@ -52,7 +53,7 @@ public class GetRaceDistancesQuery : IGetRaceDistancesQuery
         public int RaceId { get; set; } = default;
         public string Name { get; init; } = default!;
         public double? Distance { get; init; } = default!;
-        public DateTime? StartDate { get; init; } = default!;
+        public LocalDate? StartDate { get; init; } = default!;
         public TimeSpan? StartTime { get; init; } = default!;
         public int? UnconfirmedDate { get; init; } = default!;
         public int? ElevationGain { get; init; } = default!;

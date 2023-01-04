@@ -5,6 +5,7 @@ using System;
 using System.Linq;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using RaceCalendar.Domain.Commands;
 
 namespace RaceCalendar.Domain.Services;
 
@@ -14,17 +15,40 @@ public class RaceService : IRaceService
     private readonly IGetRacesByRaceIdsQuery _getRacesByRaceIdsQuery;
     private readonly IGetRaceDistancesQuery _getRaceDistancesQuery;
     private readonly IGetRaceInfosQuery _getRaceInfosQuery;
+    private readonly IUpdateRaceCommand _updateRaceCommand;
+    private readonly IUpdateRaceDistanceCommand _updateRaceDistanceCommand;
+    private readonly IExcelUpdaterService _excelUpdaterService;
 
     public RaceService(
         IGetRacesByNameIdsQuery getRacesByNameIdsQuery,
         IGetRacesByRaceIdsQuery getRacesByRaceIdsQuery,
         IGetRaceDistancesQuery getRaceDistancesQuery,
-        IGetRaceInfosQuery getRaceInfosQuery)
+        IGetRaceInfosQuery getRaceInfosQuery,
+        IUpdateRaceCommand updateRaceCommand,
+        IUpdateRaceDistanceCommand updateRaceDistanceCommand,
+        IExcelUpdaterService excelUpdaterService)
     {
         _getRacesByNameIdsQuery = getRacesByNameIdsQuery ?? throw new ArgumentNullException(nameof(getRacesByNameIdsQuery));
         _getRacesByRaceIdsQuery = getRacesByRaceIdsQuery ?? throw new ArgumentNullException(nameof(getRacesByRaceIdsQuery));
         _getRaceDistancesQuery = getRaceDistancesQuery ?? throw new ArgumentNullException(nameof(getRaceDistancesQuery));
         _getRaceInfosQuery = getRaceInfosQuery ?? throw new ArgumentNullException(nameof(getRaceInfosQuery));
+        _updateRaceCommand = updateRaceCommand ?? throw new ArgumentNullException(nameof(updateRaceCommand));
+        _updateRaceDistanceCommand = updateRaceDistanceCommand ?? throw new ArgumentNullException(nameof(updateRaceDistanceCommand));
+        _excelUpdaterService = excelUpdaterService ?? throw new ArgumentNullException(nameof(excelUpdaterService));
+    }
+
+    public async Task Update(Race race)
+    {
+        await _excelUpdaterService.Update(race);
+
+        await _updateRaceCommand.Execute(race);
+
+        if (race.Distances.Any())
+        {
+            var raceDistanceTasks = race.Distances.Select(distance => _updateRaceDistanceCommand.Execute(distance));
+            
+            await Task.WhenAll(raceDistanceTasks);
+        }
     }
 
     public async Task<Race?> Get(string nameId, ISet<int>? distanceIds = null)

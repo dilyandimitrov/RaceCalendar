@@ -1,4 +1,5 @@
-﻿using System;
+﻿using NodaTime;
+using System;
 
 namespace RaceCalendar.Domain.Models;
 
@@ -7,7 +8,7 @@ public record RaceRequest
     RaceTypes Type,
     string? Name,
     string? NameId,
-    DateTime? StartDate,
+    LocalDate? StartDate,
     string Text,
     string Source,
     string? ClientIP,
@@ -16,5 +17,5 @@ public record RaceRequest
     bool IsProcessed
     )
 {
-    public DateTime? OldStartDate { get; set; }
+    public LocalDate? OldStartDate { get; set; }
 }

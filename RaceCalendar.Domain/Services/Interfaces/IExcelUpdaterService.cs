@@ -1,12 +1,13 @@
 ﻿using RaceCalendar.Domain.Models;
+using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace RaceCalendar.Domain.Services.Interfaces;
 
-public interface IRaceService
+public interface IExcelUpdaterService
 {
     Task Update(Race race);
-    Task<Race?> Get(string nameId, ISet<int>? distanceIds = null);
-    Task<Race?> Get(int raceId, ISet<int>? distanceIds = null);
 }
