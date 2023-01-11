@@ -28,7 +28,8 @@ public class GetRaceDistancesQuery : IGetRaceDistancesQuery
             new
             {
                 RaceId = raceId,
-                RaceDistanceIds = raceDistanceIds
+                RaceDistanceIds = raceDistanceIds,
+                RaceDistanceIdsCount = raceDistanceIds?.Count
             }));
 
         return distances
@@ -76,6 +77,6 @@ SELECT [Id] AS {nameof(RaceDistanceDto.Id)}
       ,[ResultsLink] AS {nameof(RaceDistanceDto.ResultsLink)}
 FROM [dbo].[RaceDistances]
 WHERE RaceId = @RaceId AND 
-(@RaceDistanceIds IS NULL OR Id IN @RaceDistanceIds)
+(Id IN @RaceDistanceIds OR @RaceDistanceIdsCount IS NULL)
 ";
 }

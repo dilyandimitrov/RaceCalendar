@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using RaceCalendar.Api.Requests;
 using RaceCalendar.Domain.Models;
 using RaceCalendar.Domain.Services.Interfaces;
@@ -7,6 +9,7 @@ namespace RaceCalendar.Api.Controllers;
 
 [Route("v1/api/[Controller]")]
 [ApiController]
+[Authorize(Roles = "Admin", AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
 public class RaceAdminController : ControllerBase
 {
     private readonly IRaceService _raceService;
@@ -32,6 +35,28 @@ public class RaceAdminController : ControllerBase
             null,
             (Terrains?)raceRequest.Terrain,
             (Specials?)raceRequest.Special);
+
+        race.Distances = raceRequest.Distances
+            .Select(d =>
+            {
+                var distance = new RaceDistance(
+                    d.Id,
+                    race.Id,
+                    d.Name,
+                    d.Distance,
+                    d.StartDate,
+                    TimeSpan.TryParse(d.StartTime, out var startTime) ? startTime : null,
+                    null,
+                    d.ELevationGain,
+                    string.Empty,
+                    d.Link,
+                    d.ResultsLink);
+
+                distance.Info = d.Info?.Select(i => new RaceInfo(i.Id, i.RaceId, i.RaceDistanceId, i.Name, i.Value)).ToList();
+
+                return distance;
+            })
+            .ToList();
 
         await _raceService.Update(race);
     }
