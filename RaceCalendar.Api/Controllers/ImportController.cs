@@ -1,5 +1,4 @@
-﻿using Ganss.Excel;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
+﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using RaceCalendar.Api.Responses;
@@ -31,34 +30,6 @@ namespace RaceCalendar.Api.Controllers
             _importRaceService = importRaceService ?? throw new ArgumentNullException(nameof(importRaceService));
             _deleteAllRacesCommand = deleteAllRacesCommand ?? throw new ArgumentNullException(nameof(deleteAllRacesCommand));
         }
-
-        //[HttpPost]
-        //[Route("test")]
-        //public IActionResult Test()
-        //{
-        //    var file = @"racecal.xlsx";
-
-        //    var wb = new XLWorkbook(file);
-        //    var ws = wb.Worksheet("Races");
-        //    var cells = ws.Cells();
-        //    var rows = ws.Rows();
-
-        //    var nikulden = wb.Search("nikulden-2022").FirstOrDefault();
-        //    var row = nikulden.WorksheetRow();
-        //    row.Cell("F").SetValue("2066-01-01");
-        //    //nikulden.SetValue("nikulden-2022 асдф");
-        //    //a.Value += "UPDATED BY CODE";
-
-        //    wb.SaveAs("racecal-updated.xlsx");
-
-        //    //var excel = new ExcelMapper(file);
-        //    //var races = excel.Fetch(); // -> IEnumerable<dynamic>
-        //    //races.Single(x => x.NameId == "the-cactus-run-2022").Link += "CHANGED BY CODE";
-
-        //    //excel.Save(file, races, "Races");
-
-        //    return Ok();
-        //}
 
         [HttpGet]
         [Route("list_uploaded_files")]
