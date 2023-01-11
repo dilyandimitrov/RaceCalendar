@@ -11,9 +11,9 @@ public class Race
         string name, 
         string nameId, 
         string country, 
-        string city, 
-        DateTime? startDate, 
-        DateTime? endDate,
+        string city,
+        LocalDate? startDate,
+        LocalDate? endDate,
         string link, 
         string tags, 
         Cancelled? cancelled, 
@@ -39,8 +39,8 @@ public class Race
     public string NameId { get; init; }
     public string Country { get; init; }
     public string City { get; init; }
-    public DateTime? StartDate { get; init; }
-    public DateTime? EndDate { get; init; }
+    public LocalDate? StartDate { get; init; }
+    public LocalDate? EndDate { get; init; }
     public string Link { get; init; }
     public string Tags { get; set; }
     public Cancelled? Cancelled { get; init; }
@@ -63,7 +63,7 @@ public class Race
             DateTimeZone bulgariaTimeZone = DateTimeZoneProviders.Tzdb["Europe/Sofia"];
             ZonedDateTime nowInBulgaria = now.InZone(bulgariaTimeZone);
 
-            return StartDate.Value < nowInBulgaria.ToDateTimeUnspecified();
+            return StartDate.Value.ToDateTimeUnspecified() < nowInBulgaria.ToDateTimeUnspecified();
         }
     }
 

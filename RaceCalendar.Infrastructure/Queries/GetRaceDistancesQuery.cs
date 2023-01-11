@@ -1,5 +1,6 @@
 ﻿using Dapper;
 using Microsoft.Data.SqlClient;
+using NodaTime;
 using RaceCalendar.Domain.Models;
 using RaceCalendar.Domain.Queries;
 using RaceCalendar.Infrastructure.Persistence;
@@ -27,7 +28,8 @@ public class GetRaceDistancesQuery : IGetRaceDistancesQuery
             new
             {
                 RaceId = raceId,
-                RaceDistanceIds = raceDistanceIds
+                RaceDistanceIds = raceDistanceIds,
+                RaceDistanceIdsCount = raceDistanceIds?.Count
             }));
 
         return distances
@@ -52,7 +54,7 @@ public class GetRaceDistancesQuery : IGetRaceDistancesQuery
         public int RaceId { get; set; } = default;
         public string Name { get; init; } = default!;
         public double? Distance { get; init; } = default!;
-        public DateTime? StartDate { get; init; } = default!;
+        public LocalDate? StartDate { get; init; } = default!;
         public TimeSpan? StartTime { get; init; } = default!;
         public int? UnconfirmedDate { get; init; } = default!;
         public int? ElevationGain { get; init; } = default!;
@@ -75,6 +77,6 @@ SELECT [Id] AS {nameof(RaceDistanceDto.Id)}
       ,[ResultsLink] AS {nameof(RaceDistanceDto.ResultsLink)}
 FROM [dbo].[RaceDistances]
 WHERE RaceId = @RaceId AND 
-(@RaceDistanceIds IS NULL OR Id IN @RaceDistanceIds)
+(Id IN @RaceDistanceIds OR @RaceDistanceIdsCount IS NULL)
 ";
 }

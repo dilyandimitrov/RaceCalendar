@@ -8,6 +8,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using ExcelDataReader;
 using Microsoft.Extensions.Logging;
+using NodaTime;
 using RaceCalendar.Domain.Commands;
 using RaceCalendar.Domain.Models;
 using RaceCalendar.Domain.Queries;
@@ -181,8 +182,8 @@ Cache Lookups: {_cacheLookups}
                     nameId,
                     country,
                     city,
-                    startDate,
-                    endDate,
+                    startDate.HasValue ? LocalDateTime.FromDateTime(startDate.Value).Date : null,
+                    endDate.HasValue ? LocalDateTime.FromDateTime(endDate.Value).Date : null,
                     link,
                     tags: (special & Specials.Bfla) == Specials.Bfla ? "бфла" : string.Empty,
                     cancelled,
@@ -258,7 +259,7 @@ Cache Lookups: {_cacheLookups}
                     race.Id,
                     name,
                     distance,
-                    startDate,
+                    startDate.HasValue ? LocalDateTime.FromDateTime(startDate.Value).Date : null,
                     startTime,
                     unconfirmedDate,
                     elevationGain,

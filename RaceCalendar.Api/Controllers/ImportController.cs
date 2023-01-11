@@ -1,5 +1,4 @@
-﻿using Ganss.Excel;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
+﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using RaceCalendar.Api.Responses;
@@ -30,20 +29,6 @@ namespace RaceCalendar.Api.Controllers
             _createImportDataCommand = createImportDataCommand ?? throw new ArgumentNullException(nameof(createImportDataCommand));
             _importRaceService = importRaceService ?? throw new ArgumentNullException(nameof(importRaceService));
             _deleteAllRacesCommand = deleteAllRacesCommand ?? throw new ArgumentNullException(nameof(deleteAllRacesCommand));
-        }
-
-        [HttpPost]
-        public IActionResult Test()
-        {
-            var file = @"Import/racecal.xlsx";
-
-            var excel = new ExcelMapper(file);
-            var races = excel.Fetch(); // -> IEnumerable<dynamic>
-            races.Single(x => x.NameId == "the-cactus-run-2022").Link += "CHANGED BY CODE";
-
-            excel.Save(file, races, "Races");
-
-            return Ok();
         }
 
         [HttpGet]

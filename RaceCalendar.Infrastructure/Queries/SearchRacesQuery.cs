@@ -1,5 +1,6 @@
 ﻿using Dapper;
 using Microsoft.Data.SqlClient;
+using NodaTime;
 using RaceCalendar.Domain.Models;
 using RaceCalendar.Domain.Queries;
 using RaceCalendar.Infrastructure.Persistence;
@@ -28,8 +29,8 @@ public class SearchRacesQuery : ISearchRacesQuery
             ShowPrevious = filter.ShowPrevious ?? 0,
             Page = (page - 1) * pageSize,
             PageSize = pageSize,
-            StartDate = filter.FromDate?.ToString("s"),
-            EndDate = filter.ToDate?.ToString("s"),
+            StartDate = filter.FromDate?.ToDateTimeUnspecified(),
+            EndDate = filter.ToDate?.ToDateTimeUnspecified(),
             FromDistance = filter.FromDistance,
             ToDistance = filter.ToDistance,
             Text = $"%{filter.Text}%",
@@ -67,8 +68,8 @@ public class SearchRacesQuery : ISearchRacesQuery
         public string NameId { get; set; } = default!;
         public string Country { get; set; } = default!;
         public string City { get; set; } = default!;
-        public DateTime? StartDate { get; set; } = null;
-        public DateTime? EndDate { get; set; } = null;
+        public LocalDate? StartDate { get; set; } = default!;
+        public LocalDate? EndDate { get; set; } = default!;
         public string Link { get; set; } = default!;
         public string Tags { get; set; } = default!;
         public Cancelled? Cancelled { get; set; } = null;
@@ -83,7 +84,19 @@ AS
 (
     {GetPreviousRacesSql}
     UNION
-    SELECT DISTINCT R.*
+    SELECT DISTINCT
+        R.Id AS [{nameof(RaceDto.Id)}],
+        R.Name AS [{nameof(RaceDto.Name)}],
+        R.NameId AS [{nameof(RaceDto.NameId)}],
+        R.Country AS [{nameof(RaceDto.Country)}],
+        R.City AS [{nameof(RaceDto.City)}],
+        R.StartDate AS [{nameof(RaceDto.StartDate)}],
+        R.EndDate AS [{nameof(RaceDto.EndDate)}],
+        R.Link AS [{nameof(RaceDto.Link)}],
+        R.Tags AS [{nameof(RaceDto.Tags)}],
+        R.Terrain AS [{nameof(RaceDto.Terrain)}],
+        R.Special AS [{nameof(RaceDto.Special)}],
+        R.Cancelled AS [{nameof(RaceDto.Cancelled)}]
     FROM 
         dbo.Races R INNER JOIN dbo.RaceDistances RD ON RD.RaceId = R.Id
     WHERE
@@ -101,7 +114,19 @@ FETCH NEXT @PageSize ROWS ONLY
 ";
 
     private const string GetPreviousRacesSql = $@"
-SELECT DISTINCT TOP (@ShowPrevious) R.*
+SELECT DISTINCT TOP (@ShowPrevious) 
+    R.Id AS [{nameof(RaceDto.Id)}],
+    R.Name AS [{nameof(RaceDto.Name)}],
+    R.NameId AS [{nameof(RaceDto.NameId)}],
+    R.Country AS [{nameof(RaceDto.Country)}],
+    R.City AS [{nameof(RaceDto.City)}],
+    R.StartDate AS [{nameof(RaceDto.StartDate)}],
+    R.EndDate AS [{nameof(RaceDto.EndDate)}],
+    R.Link AS [{nameof(RaceDto.Link)}],
+    R.Tags AS [{nameof(RaceDto.Tags)}],
+    R.Terrain AS [{nameof(RaceDto.Terrain)}],
+    R.Special AS [{nameof(RaceDto.Special)}],
+    R.Cancelled AS [{nameof(RaceDto.Cancelled)}]
 FROM 
     dbo.Races R INNER JOIN dbo.RaceDistances RD ON RD.RaceId = R.Id
 WHERE

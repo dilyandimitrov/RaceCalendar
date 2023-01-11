@@ -1,12 +1,13 @@
-﻿using System;
+﻿using NodaTime;
+using System;
 
 namespace RaceCalendar.Domain.Models;
 
 public record GetRacesFilterInput(
     string? Text,
     string? City,
-    DateTime? FromDate,
-    DateTime? ToDate,
+    LocalDate? FromDate,
+    LocalDate? ToDate,
     double? FromDistance,
     double? ToDistance,
     Terrains? Terrain,

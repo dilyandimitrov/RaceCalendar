@@ -1,19 +1,16 @@
-using System;
 using System.Text;
+using Dapper.NodaTime;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.DataProtection;
-using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using NodaTime;
+using NodaTime.Serialization.JsonNet;
+using NodaTime.Serialization.SystemTextJson;
 using RaceCalendar.Api.Configuration;
-using RaceCalendar.Api.Responses;
 using RaceCalendar.Api.Utils;
 using RaceCalendar.Domain.Models.Authentication;
 using RaceCalendar.Infrastructure.DbContext;
@@ -33,7 +30,11 @@ namespace RaceCalendar.Api
 
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllers();
+            services.AddControllers()
+                .AddJsonOptions(options =>
+                {
+                    options.JsonSerializerOptions.ConfigureForNodaTime(DateTimeZoneProviders.Tzdb);
+                });
 
             services.AddLogging(x =>
             {
@@ -153,6 +154,7 @@ namespace RaceCalendar.Api
                     pattern: "{controller}/{action}/{id?}",
                     defaults: new { controller = "Home", action = "Index" });
             });
+            DapperNodaTimeSetup.Register();
         }
     }
 

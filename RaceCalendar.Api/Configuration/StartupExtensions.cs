@@ -75,6 +75,8 @@ namespace RaceCalendar.Api.Configuration
             services.AddScoped<IUpdateRaceInfoCommand, UpdateRaceInfoCommand>();
             services.AddScoped<IDeleteAllRacesCommand, DeleteAllRacesCommand>();
             services.AddScoped<IDeleteUserSettingsCommand, DeleteUserSettingsCommand>();
+            services.AddScoped<IDeleteRaceInfosCommand, DeleteRaceInfosCommand>();
+            services.AddScoped<IDeleteRaceDistanceCommand, DeleteRaceDistanceCommand>();
 
             return services;
         }
@@ -96,6 +98,8 @@ namespace RaceCalendar.Api.Configuration
             services.AddScoped<ITransliterationService, TransliterationService>();
             services.AddScoped<IUserResultService, UserResultService>();
             services.AddScoped<IImportRaceService, ImportRaceService>();
+            services.AddScoped<IExcelUpdaterService, ExcelUpdaterService>();
+            services.AddScoped<ISystemInfoService, SystemInfoService>();
 
             return services;
         }

@@ -1,0 +1,8 @@
+﻿using System.Threading.Tasks;
+
+namespace RaceCalendar.Domain.Services.Interfaces;
+
+public interface ISystemInfoService
+{
+    Task CreateOrUpdateDbLastUpdated();
+}
