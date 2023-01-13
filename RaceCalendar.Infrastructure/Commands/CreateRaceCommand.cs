@@ -26,7 +26,7 @@ public class CreateRaceCommand : ICreateRaceCommand
             Id = race.Id,
             Name = race.Name,
             NameId = race.NameId,
-            Country = race.Country,
+            Country = race.Country ?? "България",
             City = race.City,
             StartDate = race.StartDate,
             EndDate = race.EndDate,

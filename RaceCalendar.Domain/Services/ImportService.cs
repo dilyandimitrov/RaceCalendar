@@ -335,7 +335,7 @@ Cache Lookups: {_cacheLookups}
                 }
 
                 var raceInfo = new RaceInfo(
-                    id.Value,
+                    id!.Value,
                     race.Id,
                     raceDistance.Id,
                     name,

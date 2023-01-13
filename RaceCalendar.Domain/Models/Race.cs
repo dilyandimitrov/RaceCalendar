@@ -1,5 +1,4 @@
 ﻿using NodaTime;
-using System;
 using System.Collections.Generic;
 
 namespace RaceCalendar.Domain.Models;
@@ -10,12 +9,12 @@ public class Race
         int id, 
         string name, 
         string nameId, 
-        string country, 
-        string city,
+        string? country, 
+        string? city,
         LocalDate? startDate,
         LocalDate? endDate,
-        string link, 
-        string tags, 
+        string? link, 
+        string? tags, 
         Cancelled? cancelled, 
         Terrains? terrain, 
         Specials? special)
@@ -34,18 +33,18 @@ public class Race
         Special = special;
     }
 
-    public int Id { get; init; }
-    public string Name { get; init; }
-    public string NameId { get; init; }
-    public string Country { get; init; }
-    public string City { get; init; }
-    public LocalDate? StartDate { get; init; }
-    public LocalDate? EndDate { get; init; }
-    public string Link { get; init; }
-    public string Tags { get; set; }
-    public Cancelled? Cancelled { get; init; }
-    public Terrains? Terrain { get; init; }
-    public Specials? Special { get; init; }
+    public int Id { get; set; }
+    public string Name { get; set; }
+    public string NameId { get; set; }
+    public string? Country { get; set; }
+    public string? City { get; set; }
+    public LocalDate? StartDate { get; set; }
+    public LocalDate? EndDate { get; set; }
+    public string? Link { get; set; }
+    public string? Tags { get; set; }
+    public Cancelled? Cancelled { get; set; }
+    public Terrains? Terrain { get; set; }
+    public Specials? Special { get; set; }
 
     public IEnumerable<RaceDistance> Distances { get; set; } = default!;
     public bool AllDistances { get; set; }

@@ -32,7 +32,7 @@ public class RaceAdminController : ControllerBase
             raceRequest.EndDate,
             raceRequest.Link,
             raceRequest.Tags,
-            null,
+            (Cancelled?)raceRequest.Cancelled,
             (Terrains?)raceRequest.Terrain,
             (Specials?)raceRequest.Special);
 
@@ -59,5 +59,12 @@ public class RaceAdminController : ControllerBase
             .ToList();
 
         await _raceService.Update(race);
+    }
+
+    [HttpDelete]
+    [Route("{raceId}")]
+    public async Task Delete([FromRoute]int raceId)
+    {
+        await _raceService.Delete(raceId);
     }
 }

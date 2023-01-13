@@ -40,7 +40,7 @@ public class GetRacesByNameIdsQuery : IGetRacesByNameIdsQuery
                 r.EndDate, 
                 r.Link, 
                 r.Tags, 
-                null, 
+                r.Cancelled, 
                 r.Terrain, 
                 r.Special));
     }
@@ -58,6 +58,7 @@ public class GetRacesByNameIdsQuery : IGetRacesByNameIdsQuery
         public string Tags { get; init; } = default!;
         public Terrains Terrain { get; init; } = default!;
         public Specials Special { get; init; } = default!;
+        public Cancelled Cancelled { get; init; } = default!;
     }
 
     private const string Sql = @$"
@@ -71,7 +72,8 @@ SELECT [Id] AS {nameof(RaceDto.Id)}
     ,[Link] AS {nameof(RaceDto.Link)}
     ,[Tags] AS {nameof(RaceDto.Tags)}
     ,[Terrain] AS {nameof(RaceDto.Terrain)}
-    ,[Special]AS {nameof(RaceDto.Special)}
+    ,[Special] AS {nameof(RaceDto.Special)}
+    ,[Cancelled] AS {nameof(RaceDto.Cancelled)}
 FROM [dbo].[Races]
 WHERE NameId IN @NameIds";
 }

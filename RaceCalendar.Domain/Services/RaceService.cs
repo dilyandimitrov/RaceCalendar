@@ -24,6 +24,8 @@ public class RaceService : IRaceService
     private readonly ICreateRaceDistanceCommand _createRaceDistanceCommand;
     private readonly ICreateRaceInfoCommand _createRaceInfoCommand;
     private readonly ISystemInfoService _systemInfoService;
+    private readonly ICreateRaceCommand _createRaceCommand;
+    private readonly IDeleteRaceCommand _deleteRaceCommand;
 
     public RaceService(
         IGetRacesByNameIdsQuery getRacesByNameIdsQuery,
@@ -38,7 +40,9 @@ public class RaceService : IRaceService
         IDeleteRaceDistanceCommand deleteRaceDistanceCommand,
         ICreateRaceDistanceCommand createRaceDistanceCommand,
         ICreateRaceInfoCommand createRaceInfoCommand,
-        ISystemInfoService systemInfoService)
+        ISystemInfoService systemInfoService,
+        ICreateRaceCommand createRaceCommand,
+        IDeleteRaceCommand deleteRaceCommand)
     {
         _getRacesByNameIdsQuery = getRacesByNameIdsQuery ?? throw new ArgumentNullException(nameof(getRacesByNameIdsQuery));
         _getRacesByRaceIdsQuery = getRacesByRaceIdsQuery ?? throw new ArgumentNullException(nameof(getRacesByRaceIdsQuery));
@@ -53,16 +57,16 @@ public class RaceService : IRaceService
         _createRaceDistanceCommand = createRaceDistanceCommand ?? throw new ArgumentNullException(nameof(createRaceDistanceCommand));
         _createRaceInfoCommand = createRaceInfoCommand ?? throw new ArgumentNullException(nameof(createRaceInfoCommand));
         _systemInfoService = systemInfoService ?? throw new ArgumentNullException(nameof(systemInfoService));
+        _createRaceCommand = createRaceCommand ?? throw new ArgumentNullException(nameof(createRaceCommand));
+        _deleteRaceCommand = deleteRaceCommand ?? throw new ArgumentNullException(nameof(deleteRaceCommand));
     }
 
     public async Task Update(Race race)
     {
         await _excelUpdaterService.Update(race);
 
-        await _updateRaceCommand.Execute(race);
-
+        await UpdateRace(race);
         await UpdateDistances(race);
-        
         await UpdateInfos(race);
 
         await _systemInfoService.CreateOrUpdateDbLastUpdated();
@@ -80,6 +84,32 @@ public class RaceService : IRaceService
         var raceMap = (await _getRacesByRaceIdsQuery.Get(new HashSet<int>() { raceId })).SingleOrDefault();
 
         return await GetInternal(raceMap.Value, distanceIds);
+    }
+
+    public async Task Delete(int raceId)
+    {
+        var race = await Get(raceId);
+
+        if (race is null)
+        {
+            throw new InvalidOperationException($"Race with Id ${raceId} does not exist.");
+        }
+
+        await _excelUpdaterService.Delete(race);
+
+        var infoIdsToDelete = race.Distances
+                .Where(distance => distance.Info is not null)
+                .SelectMany(distance => distance.Info!
+                    .Select(info => info.Id))
+                .ToHashSet();
+
+        var distanceIdsToDelete = race.Distances
+            .Select(distance => distance.Id)
+            .ToHashSet();
+
+        await _deleteRaceInfosCommand.Execute(infoIdsToDelete);
+        await _deleteRaceDistanceCommand.Execute(distanceIdsToDelete);
+        await _deleteRaceCommand.Execute(raceId);
     }
 
     private async Task<Race?> GetInternal(Race race, ISet<int>? distanceIds = null)
@@ -103,6 +133,20 @@ public class RaceService : IRaceService
         }
 
         return race;
+    }
+
+    private async Task UpdateRace(Race race)
+    {
+        var raceDb = await Get(race.Id);
+
+        if (raceDb is null)
+        {
+            await _createRaceCommand.Execute(race);
+        }
+        else
+        {
+            await _updateRaceCommand.Execute(race);
+        }
     }
 
     private async Task UpdateDistances(Race race)

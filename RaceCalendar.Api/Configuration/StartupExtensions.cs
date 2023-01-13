@@ -6,7 +6,6 @@ using RaceCalendar.Domain.Services.Interfaces;
 using RaceCalendar.Infrastructure.Commands;
 using RaceCalendar.Infrastructure.Persistence;
 using RaceCalendar.Infrastructure.Queries;
-using RaceCalendar.Infrastructure.Queries.Caching;
 
 namespace RaceCalendar.Api.Configuration
 {
@@ -43,14 +42,11 @@ namespace RaceCalendar.Api.Configuration
             services.AddScoped<IGetRacesByNameIdsQuery, GetRacesByNameIdsQuery>();
             services.AddScoped<IGetRaceDistancesCountQuery, GetRaceDistancesCountQuery>();
             services.AddScoped<IGetRaceDistancesQuery, GetRaceDistancesQuery>();
-                //.Decorate<IGetRaceDistancesQuery, GetRaceDistancesQueryCacheDecorator>();
             services.AddScoped<IGetRaceInfosQuery, GetRaceInfosQuery>();
-                //.Decorate<IGetRaceInfosQuery, GetRaceInfosQueryCacheDecorator>();
             services.AddScoped<IGetAllUsersQuery, GetAllUsersQuery>();
             services.AddScoped<IGetUserRacesByUserQuery, GetUserRacesByUserQuery>();
             services.AddScoped<IGetUserSettingsQuery, GetUserSettingsQuery>();
             services.AddScoped<IGetRacesByRaceIdsQuery, GetRacesByRaceIdsQuery>();
-                //.Decorate<IGetRacesByRaceIdsQuery, GetRacesByRaceIdsQueryCacheDecorator>();
             services.AddScoped<IGetImportDataQuery, GetImportDataQuery>();
 
             return services;
@@ -77,6 +73,7 @@ namespace RaceCalendar.Api.Configuration
             services.AddScoped<IDeleteUserSettingsCommand, DeleteUserSettingsCommand>();
             services.AddScoped<IDeleteRaceInfosCommand, DeleteRaceInfosCommand>();
             services.AddScoped<IDeleteRaceDistanceCommand, DeleteRaceDistanceCommand>();
+            services.AddScoped<IDeleteRaceCommand, DeleteRaceCommand>();
 
             return services;
         }
