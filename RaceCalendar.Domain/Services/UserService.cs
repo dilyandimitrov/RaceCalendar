@@ -54,7 +54,9 @@ namespace RaceCalendar.Domain.Services
 
         public async Task<IEnumerable<GetAllUsersResponse>> GetAll()
         {
-            var users = await _getAllUsersQuery.Get();
+            var users = (await _getAllUsersQuery.Get()).ToList();
+
+            users.Sort((u1, u2) => DateTime.Compare(u2.CreatedOn, u1.CreatedOn));
 
             return users;
         }

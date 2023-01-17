@@ -42,7 +42,6 @@ SELECT
     CreatedOn AS {nameof(GetAllUsersResponse.CreatedOn)},
     UpdatedOn AS {nameof(GetAllUsersResponse.UpdatedOn)}
 FROM [RaceCalendar].[dbo].[Users.Users]
-ORDER BY CreatedOn
 
 SELECT 
     ur.UserId AS {nameof(GetAllUserRacesResponse.UserId)},
@@ -53,7 +52,6 @@ SELECT
 FROM [RaceCalendar].[dbo].[UserRaces] ur
 INNER JOIN [RaceCalendar].[dbo].[Races] r ON r.Id = ur.RaceId
 INNER JOIN [RaceCalendar].[dbo].[RaceDistances] rd ON rd.Id = ur.RaceDistanceId
-ORDER BY r.StartDate
 ";
 
     private sealed class RaceDistanceCountDto
