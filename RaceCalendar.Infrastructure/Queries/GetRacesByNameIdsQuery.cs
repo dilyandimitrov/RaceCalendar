@@ -56,9 +56,9 @@ public class GetRacesByNameIdsQuery : IGetRacesByNameIdsQuery
         public LocalDate? EndDate { get; init; } = default!;
         public string Link { get; init; } = default!;
         public string Tags { get; init; } = default!;
-        public Terrains Terrain { get; init; } = default!;
-        public Specials Special { get; init; } = default!;
-        public Cancelled Cancelled { get; init; } = default!;
+        public Terrains? Terrain { get; init; } = default!;
+        public Specials? Special { get; init; } = default!;
+        public Cancelled? Cancelled { get; init; } = default!;
     }
 
     private const string Sql = @$"
