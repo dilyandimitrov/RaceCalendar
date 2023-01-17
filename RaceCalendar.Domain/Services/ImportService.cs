@@ -165,9 +165,9 @@ Cache Lookups: {_cacheLookups}
                 DateTime? startDate = ParseDate(row.ItemArray[5], out isStartDateConfirmed, country);
                 DateTime? endDate = ParseDate(row.ItemArray[6], out isEndDateConfirmed, country);
                 string link = row.ItemArray[7].ToString();
-                Terrains? terrain = ParseTerrain(row.ItemArray[8]);
-                Specials? special = ParseSpecial(row.ItemArray[9]);
-                Cancelled? cancelled = ParseCancelled(row.ItemArray[11]);
+                Terrains? terrain = ParseFlag<Terrains>(row.ItemArray[8]);
+                Specials? special = ParseFlag<Specials>(row.ItemArray[9]);
+                Cancelled? cancelled = ParseFlag<Cancelled>(row.ItemArray[11]);
 
                 int? unconfirmedDate = null;
                 if (!isStartDateConfirmed)
@@ -374,7 +374,9 @@ Cache Lookups: {_cacheLookups}
         isDateConfirmed = true;
 
         if (string.IsNullOrEmpty(data.ToString()))
+        {
             return null;
+        }
 
         if (DateTime.TryParseExact(data.ToString(), "yyyy-MM-dd", null, DateTimeStyles.AssumeLocal, out date))
         {
@@ -402,58 +404,25 @@ Cache Lookups: {_cacheLookups}
     protected TimeSpan? ParseTime(object data)
     {
         if (string.IsNullOrEmpty(data.ToString()))
+        {
             return null;
+        }
 
-        DateTime date;
-        if (!DateTime.TryParse(data.ToString(), out date))
+        if (!DateTime.TryParse(data.ToString(), out var date))
         {
             throw new ArgumentException($"Date format {data} cannot be parsed as valid time");
         }
 
-        return DateTime.Parse(data.ToString()).TimeOfDay;
+        return date.TimeOfDay;
     }
 
     protected int? ParseInt(object data)
     {
-        int dataInt;
-        if (int.TryParse(data.ToString(), out dataInt))
-        {
-            return dataInt;
-        }
-
-        return null;
+        return int.TryParse(data.ToString(), out var dataInt) ? dataInt : null;
     }
 
-    protected Terrains? ParseTerrain(object data)
+    protected T? ParseFlag<T>(object data) where T : struct
     {
-        int dataInt;
-        if (int.TryParse(data.ToString(), out dataInt))
-        {
-            return (Terrains?)dataInt;
-        }
-
-        return null;
-    }
-
-    protected Specials? ParseSpecial(object data)
-    {
-        int dataInt;
-        if (int.TryParse(data.ToString(), out dataInt))
-        {
-            return (Specials?)dataInt;
-        }
-
-        return null;
-    }
-
-    protected Cancelled? ParseCancelled(object data)
-    {
-        int dataInt;
-        if (int.TryParse(data.ToString(), out dataInt))
-        {
-            return (Cancelled?)dataInt;
-        }
-
-        return null;
+        return Enum.TryParse<T>(data.ToString(), out var flag) ? flag : null;
     }
 }
