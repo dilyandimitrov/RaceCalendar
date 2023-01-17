@@ -31,6 +31,8 @@ public class ExcelUpdaterService : IExcelUpdaterService
         using var ms = new MemoryStream(importData.Data);
         using var workbook = new XLWorkbook(ms);
 
+        var isNewRace = race.Id == default;
+
         CreateOrUpdateRace(workbook, race);
         CreateOrUpdateDistances(workbook, race);
 
@@ -44,7 +46,7 @@ public class ExcelUpdaterService : IExcelUpdaterService
                 stream.Length,
                 importData.ContentType,
                 stream.ToArray(),
-                "Updated From Code");
+                $"{(isNewRace ? "Created" : "Updated")} {race.NameId}");
 
         await _createImportDataCommand.Execute(importDataToUpdate);
     }
@@ -68,7 +70,7 @@ public class ExcelUpdaterService : IExcelUpdaterService
                 stream.Length,
                 importData.ContentType,
                 stream.ToArray(),
-                "Updated From Code");
+                $"Deleted {race.NameId}");
 
         await _createImportDataCommand.Execute(importDataToUpdate);
     }
@@ -77,14 +79,7 @@ public class ExcelUpdaterService : IExcelUpdaterService
     {
         var raceWorksheet = workbook.Worksheet("Races");
 
-        var raceIdCell = raceWorksheet.Range($"A2:A{raceWorksheet.RowCount()}").CellsUsed(x => x.GetValue<int>() == race.Id).SingleOrDefault();
-
-        if (raceIdCell is null)
-        {
-            throw new InvalidOperationException($"Race with id {race.Id} was not found");
-        }
-
-        var raceRow = raceIdCell.WorksheetRow();
+        var raceRow = FindRow(raceWorksheet, race.Id);
 
         if (!raceRow.Search(race.NameId.ToString()).Any())
         {
@@ -96,14 +91,7 @@ public class ExcelUpdaterService : IExcelUpdaterService
         var distancesWorksheet = workbook.Worksheet("RaceDistances");
         foreach (var distance in race.Distances)
         {
-            var distanceIdCell = distancesWorksheet.Range($"A2:A{distancesWorksheet.RowCount()}").CellsUsed(x => x.GetValue<int>() == distance.Id).SingleOrDefault();
-
-            if (distanceIdCell is null)
-            {
-                throw new InvalidOperationException($"Race distance with id {distance.Id} was not found");
-            }
-
-            var distanceRow = distanceIdCell.WorksheetRow();
+            var distanceRow = FindRow(distancesWorksheet, distance.Id);
 
             if (!distanceRow.Search(race.NameId.ToString()).Any())
             {
@@ -117,14 +105,7 @@ public class ExcelUpdaterService : IExcelUpdaterService
                 var infoWorksheet = workbook.Worksheet("RaceInfo");
                 foreach (var info in distance.Info)
                 {
-                    var infoIdCell = infoWorksheet.Range($"A2:A{infoWorksheet.RowCount()}").CellsUsed(x => x.GetValue<int>() == info.Id).SingleOrDefault();
-
-                    if (infoIdCell is null)
-                    {
-                        throw new InvalidOperationException($"Race distance info with id {info.Id} was not found");
-                    }
-
-                    var infoRow = infoIdCell.WorksheetRow();
+                    var infoRow = FindRow(infoWorksheet, info.Id);
 
                     if (!infoRow.Search(race.NameId.ToString()).Any())
                     {
@@ -161,45 +142,13 @@ public class ExcelUpdaterService : IExcelUpdaterService
         row.Cell("C").SetValue(race.NameId);
         row.Cell("D").SetValue(race.Country ?? "България");
         row.Cell("E").SetValue(race.City);
-        if (race.StartDate.HasValue)
-        {
-            row.Cell("F").SetValue(race.StartDate.Value.ToString("yyyy-MM-dd", null));
-        }
-        if (race.EndDate.HasValue)
-        {
-            row.Cell("G").SetValue(race.EndDate.Value.ToString("yyyy-MM-dd", null));
-        }
+        row.Cell("F").SetValue(race.StartDate?.ToString("yyyy-MM-dd", null));
+        row.Cell("G").SetValue(race.EndDate?.ToString("yyyy-MM-dd", null));
         row.Cell("H").SetValue(race.Link);
 
-        if (race.Terrain == 0 || race.Terrain is null)
-        {
-            row.Cell("I").SetValue(string.Empty);
-            row.Cell("I").DataType = XLDataType.Number;
-        }
-        else
-        {
-            row.Cell("I").SetValue((int)race.Terrain);
-        }
-
-        if (race.Special == 0 || race.Special is null)
-        {
-            row.Cell("J").SetValue(string.Empty);
-            row.Cell("J").DataType = XLDataType.Number;
-        }
-        else
-        {
-            row.Cell("J").SetValue((int)race.Special);
-        }
-
-        if (race.Cancelled == 0 || race.Cancelled is null)
-        {
-            row.Cell("L").SetValue(string.Empty);
-            row.Cell("L").DataType = XLDataType.Number;
-        }
-        else
-        {
-            row.Cell("L").SetValue((int)race.Cancelled);
-        }
+        CreateOrUpdateFlag<Terrains>(row, "I", race.Terrain);
+        CreateOrUpdateFlag<Specials>(row, "J", race.Special);
+        CreateOrUpdateFlag<Cancelled>(row, "L", race.Cancelled);
     }
 
     private void UpdateRace(XLWorkbook workbook, Race race)
@@ -209,16 +158,9 @@ public class ExcelUpdaterService : IExcelUpdaterService
             return;
         }
 
-        var workSheet = workbook.Worksheet("Races");
+        var worksheet = workbook.Worksheet("Races");
 
-        var raceIdCell = workSheet.Range($"A2:A{workSheet.RowCount()}").CellsUsed(x => x.GetValue<int>() == race.Id).SingleOrDefault();
-
-        if (raceIdCell is null)
-        {
-            throw new InvalidOperationException($"Race with id {race.Id} was not found");
-        }
-
-        var row = raceIdCell.WorksheetRow();
+        var row = FindRow(worksheet, race.Id);
 
         if (!row.Search(race.NameId.ToString()).Any())
         {
@@ -228,45 +170,13 @@ public class ExcelUpdaterService : IExcelUpdaterService
         row.Cell("B").SetValue(race.Name);
         row.Cell("C").SetValue(race.NameId);
         row.Cell("E").SetValue(race.City);
-        if (race.StartDate.HasValue)
-        {
-            row.Cell("F").SetValue(race.StartDate.Value.ToString("yyyy-MM-dd", null));
-        }
-        if (race.EndDate.HasValue)
-        {
-            row.Cell("G").SetValue(race.EndDate.Value.ToString("yyyy-MM-dd", null));
-        }
+        row.Cell("F").SetValue(race.StartDate?.ToString("yyyy-MM-dd", null));
+        row.Cell("G").SetValue(race.EndDate?.ToString("yyyy-MM-dd", null));
         row.Cell("H").SetValue(race.Link);
 
-        if (race.Terrain == 0 || race.Terrain is null)
-        {
-            row.Cell("I").SetValue(string.Empty);
-            row.Cell("I").DataType = XLDataType.Number;
-        }
-        else
-        {
-            row.Cell("I").SetValue((int)race.Terrain);
-        }
-
-        if (race.Special == 0 || race.Special is null)
-        {
-            row.Cell("J").SetValue(string.Empty);
-            row.Cell("J").DataType = XLDataType.Number;
-        }
-        else
-        {
-            row.Cell("J").SetValue((int)race.Special);
-        }
-
-        if (race.Cancelled == 0 || race.Cancelled is null)
-        {
-            row.Cell("L").SetValue(string.Empty);
-            row.Cell("L").DataType = XLDataType.Number;
-        }
-        else
-        {
-            row.Cell("L").SetValue((int)race.Cancelled);
-        }
+        CreateOrUpdateFlag<Terrains>(row, "I", race.Terrain);
+        CreateOrUpdateFlag<Specials>(row, "J", race.Special);
+        CreateOrUpdateFlag<Cancelled>(row, "L", race.Cancelled);
     }
 
     private void CreateOrUpdateDistances(XLWorkbook workbook, Race race)
@@ -278,10 +188,10 @@ public class ExcelUpdaterService : IExcelUpdaterService
 
     private void DeleteDistances(XLWorkbook workbook, Race race)
     {
-        var workSheet = workbook.Worksheet("RaceDistances");
+        var worksheet = workbook.Worksheet("RaceDistances");
 
-        var allDistanceCells = workSheet
-            .Range($"B2:B{workSheet.RowCount()}")
+        var allDistanceCells = worksheet
+            .Range($"B2:B{worksheet.RowCount()}")
             .CellsUsed(x => x.GetValue<int>() == race.Id);
 
         var rowsToBeDeleted = new List<IXLRow>();
@@ -302,7 +212,7 @@ public class ExcelUpdaterService : IExcelUpdaterService
 
         var infoWorkSheet = workbook.Worksheet("RaceInfo");
         var allInfoCellsToDelete = infoWorkSheet
-            .Range($"D2:D{workSheet.RowCount()}")
+            .Range($"D2:D{worksheet.RowCount()}")
             .CellsUsed(x => distanceIdsToDelete.Contains(x.GetValue<int>()));
 
         foreach (var cell in allInfoCellsToDelete)
@@ -327,17 +237,8 @@ public class ExcelUpdaterService : IExcelUpdaterService
             row.Cell("C").SetValue(race.NameId);
             row.Cell("D").SetValue(distance.Name);
             row.Cell("E").SetValue(distance.Distance);
-
-            if (distance.StartDate.HasValue)
-            {
-                row.Cell("F").SetValue(distance.StartDate.Value.ToString("yyyy-MM-dd", null));
-            }
-
-            if (distance.StartTime.HasValue)
-            {
-                row.Cell("G").SetValue(distance.StartTime.Value.ToString(@"hh\:mm"));
-            }
-
+            row.Cell("F").SetValue(distance.StartDate?.ToString("yyyy-MM-dd", null));
+            row.Cell("G").SetValue(distance.StartTime?.ToString(@"hh\:mm"));
             row.Cell("H").SetValue(distance.ElevationGain);
             row.Cell("J").SetValue(distance.Link);
             row.Cell("K").SetValue(distance.ResultsLink);
@@ -354,18 +255,11 @@ public class ExcelUpdaterService : IExcelUpdaterService
 
     private void UpdateDistances(XLWorkbook workbook, Race race)
     {
-        var workSheet = workbook.Worksheet("RaceDistances");
+        var worksheet = workbook.Worksheet("RaceDistances");
 
         foreach (var distance in race.Distances.Where(d => d.Id != default))
         {
-            var distanceIdCell = workSheet.Range($"A2:A{workSheet.RowCount()}").CellsUsed(x => x.GetValue<int>() == distance.Id).SingleOrDefault();
-
-            if (distanceIdCell is null)
-            {
-                throw new InvalidOperationException($"Race distance with id {distance.Id} was not found");
-            }
-
-            var row = distanceIdCell.WorksheetRow();
+            var row = FindRow(worksheet, distance.Id);
 
             if (!row.Search(race.NameId.ToString()).Any())
             {
@@ -374,16 +268,8 @@ public class ExcelUpdaterService : IExcelUpdaterService
 
             row.Cell("D").SetValue(distance.Name);
             row.Cell("E").SetValue(distance.Distance);
-
-            if (distance.StartDate.HasValue)
-            {
-                row.Cell("F").SetValue(distance.StartDate.Value.ToString("yyyy-MM-dd", null));
-            }
-            if (distance.StartTime.HasValue)
-            {
-                row.Cell("G").SetValue(distance.StartTime.Value.ToString(@"hh\:mm"));
-            }
-
+            row.Cell("F").SetValue(distance.StartDate?.ToString("yyyy-MM-dd", null));
+            row.Cell("G").SetValue(distance.StartTime?.ToString(@"hh\:mm"));
             row.Cell("H").SetValue(distance.ElevationGain);
             row.Cell("J").SetValue(distance.Link);
             row.Cell("K").SetValue(distance.ResultsLink);
@@ -399,10 +285,10 @@ public class ExcelUpdaterService : IExcelUpdaterService
             return;
         }
 
-        var workSheet = workbook.Worksheet("RaceInfo");
+        var worksheet = workbook.Worksheet("RaceInfo");
 
-        var allInfoCells = workSheet
-            .Range($"D2:D{workSheet.RowCount()}")
+        var allInfoCells = worksheet
+            .Range($"D2:D{worksheet.RowCount()}")
             .CellsUsed(x => x.GetValue<int>() == distance.Id);
 
         foreach (var cell in allInfoCells)
@@ -418,14 +304,7 @@ public class ExcelUpdaterService : IExcelUpdaterService
         {
             if (info.Id != default)
             {
-                var infoIdCell = workSheet.Range($"A2:A{workSheet.RowCount()}").CellsUsed(x => x.GetValue<int>() == info.Id).SingleOrDefault();
-
-                if (infoIdCell is null)
-                {
-                    throw new InvalidOperationException($"Race distance info with id {info.Id} was not found");
-                }
-
-                var row = infoIdCell.WorksheetRow();
+                var row = FindRow(worksheet, info.Id);
 
                 if (!row.Search(race.NameId.ToString()).Any())
                 {
@@ -436,14 +315,14 @@ public class ExcelUpdaterService : IExcelUpdaterService
             }
             else
             {
-                AddNewInfo(workSheet, race, distance, info);
+                AddNewInfo(worksheet, race, distance, info);
             }
         }
     }
 
-    private void AddNewInfo(IXLWorksheet workSheet, Race race, RaceDistance distance, RaceInfo info)
+    private void AddNewInfo(IXLWorksheet worksheet, Race race, RaceDistance distance, RaceInfo info)
     {
-        var lastRow = workSheet.LastRowUsed();
+        var lastRow = worksheet.LastRowUsed();
         var row = lastRow.InsertRowsBelow(1).First();
         int infoId = lastRow.Cell("A").GetValue<int>() + 1;
 
@@ -458,5 +337,35 @@ public class ExcelUpdaterService : IExcelUpdaterService
         row.Cell("E").SetValue(distance.Distance);
         row.Cell("F").SetValue(info.Name);
         row.Cell("G").SetValue(info.Value);
+    }
+
+    private IXLRow FindRow(IXLWorksheet worksheet, int id)
+    {
+        var idCell = worksheet
+            .Range($"A2:A{worksheet.RowCount()}")
+            .CellsUsed(x => x.GetValue<int>() == id)
+            .SingleOrDefault();
+
+        if (idCell is null)
+        {
+            throw new InvalidOperationException($"Cell with id {id} was not found in sheet {worksheet.Name}");
+        }
+
+        var row = idCell.WorksheetRow();
+
+        return row;
+    }
+
+    private void CreateOrUpdateFlag<T>(IXLRow row, string column, T? value) where T : struct
+    {
+        if (value is null)
+        {
+            row.Cell(column).SetValue(string.Empty);
+            row.Cell(column).DataType = XLDataType.Number;
+        }
+        else
+        {
+            row.Cell(column).SetValue((int)(object)value);
+        }
     }
 }
