@@ -63,11 +63,13 @@ public class RaceService : IRaceService
 
     public async Task Update(Race race)
     {
-        await _excelUpdaterService.Update(race);
+        var raceDb = await Get(race.Id);
 
-        await UpdateRace(race);
-        await UpdateDistances(race);
-        await UpdateInfos(race);
+        await UpdateRace(race, raceDb);
+        await UpdateDistances(race, raceDb);
+        await UpdateInfos(race, raceDb);
+
+        await _excelUpdaterService.Update(race);
 
         await _systemInfoService.CreateOrUpdateDbLastUpdated();
     }
@@ -135,12 +137,17 @@ public class RaceService : IRaceService
         return race;
     }
 
-    private async Task UpdateRace(Race race)
+    private async Task UpdateRace(Race race, Race? raceDb)
     {
-        var raceDb = await Get(race.Id);
-
         if (raceDb is null)
         {
+            var raceByNameId = Get(race.NameId);
+
+            if (raceByNameId is not null)
+            {
+                throw new InvalidOperationException($"Race with NameId {race.NameId} already exists");
+            }
+
             await _createRaceCommand.Execute(race);
         }
         else
@@ -149,10 +156,8 @@ public class RaceService : IRaceService
         }
     }
 
-    private async Task UpdateDistances(Race race)
+    private async Task UpdateDistances(Race race, Race? raceDb)
     {
-        var raceDb = await Get(race.Id);
-
         if (raceDb is null)
         {
             throw new InvalidOperationException($"Race with id {race.Id} doesn't exist");
@@ -181,10 +186,8 @@ public class RaceService : IRaceService
         await Task.WhenAll(updateRaceDistanceTasks);
     }
 
-    private async Task UpdateInfos(Race race)
+    private async Task UpdateInfos(Race race, Race? raceDb)
     {
-        var raceDb = await Get(race.Id);
-
         if (raceDb is null)
         {
             throw new InvalidOperationException($"Race with id {race.Id} doesn't exist");
