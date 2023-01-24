@@ -311,6 +311,7 @@ public class ExcelUpdaterService : IExcelUpdaterService
                     throw new InvalidOperationException($"Race distance info with id {info.Id} didn't match the race {race.NameId}");
                 }
 
+                row.Cell("E").SetValue(distance.Distance);
                 row.Cell("G").SetValue(info.Value);
             }
             else
