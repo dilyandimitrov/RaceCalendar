@@ -47,7 +47,11 @@ public class RaceTrackingFetchResultStrategy : FetchResultStrategy
             var position = GetText(matchingRow.ChildNodes, 0);
             var result = GetText(matchingRow.ChildNodes, 5);
 
-            if (content.DocumentNode.InnerHtml.Contains("RATCU"))
+            if (content.DocumentNode.InnerHtml.Contains("Balkan Ultra"))
+            {
+                result = matchingRow.ChildNodes[5].ChildNodes[0].InnerText.Trim();
+            }
+            else if (content.DocumentNode.InnerHtml.Contains("RATCU"))
             {
                 result = matchingRow.ChildNodes[6].ChildNodes[0].InnerText.TrimEnd('k', 'm').Trim();
                 return (position, result, ResultTypes.Distance);
