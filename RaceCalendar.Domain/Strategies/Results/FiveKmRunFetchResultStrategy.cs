@@ -2,7 +2,6 @@ using System;
 using System.Linq;
 using System.Threading.Tasks;
 using RaceCalendar.Domain.Models;
-using RaceCalendar.Domain.Strategies.Results;
 
 namespace RaceCalendar.Domain.Strategies.Results;
 
@@ -19,7 +18,7 @@ public class FiveKmRunFetchResultStrategy : FetchResultStrategy
         var content = await GetUrlContent(url);
 
         var names = $"{firstName} {lastName}";
-        var matchingNamesNode = content.DocumentNode.SelectNodes("//td[@data-title='Име']").SingleOrDefault(x =>
+        var matchingNamesNode = content.DocumentNode.SelectNodes("//td[@data-title='name']").SingleOrDefault(x =>
             x.InnerText.Trim().Contains(names, StringComparison.InvariantCultureIgnoreCase));
 
         if (matchingNamesNode == null)
