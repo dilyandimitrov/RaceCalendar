@@ -34,7 +34,9 @@ public class RaceAdminController : ControllerBase
             raceRequest.Tags,
             (Cancelled?)raceRequest.Cancelled,
             (Terrains?)raceRequest.Terrain,
-            (Specials?)raceRequest.Special);
+            (Specials?)raceRequest.Special,
+            raceRequest.Latitude,
+            raceRequest.Longitude);
 
         race.Distances = raceRequest.Distances
             .Select(d =>
@@ -50,7 +52,9 @@ public class RaceAdminController : ControllerBase
                     d.ELevationGain,
                     string.Empty,
                     d.Link,
-                    d.ResultsLink);
+                    d.ResultsLink,
+                    d.Latitude,
+                    d.Longitude);
 
                 distance.Info = d.Info?.Select(i => new RaceInfo(i.Id, i.RaceId, i.RaceDistanceId, i.Name, i.Value)).ToList();
 

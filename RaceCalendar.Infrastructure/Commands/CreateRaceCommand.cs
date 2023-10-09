@@ -34,7 +34,9 @@ public class CreateRaceCommand : ICreateRaceCommand
             Tags = race.Tags,
             Terrain = race.Terrain,
             Special = race.Special,
-            Cancelled = race.Cancelled
+            Cancelled = race.Cancelled,
+            Latitude = race.Latitude,
+            Longitude = race.Longitude
         });
     }
 
@@ -51,7 +53,9 @@ INSERT INTO [dbo].[Races]
         ,[Tags]
         ,[Terrain]
         ,[Special]
-        ,[Cancelled])
+        ,[Cancelled]
+        ,[Latitude]
+        ,[Longitude])
 VALUES
         (@Id
         ,@Name
@@ -64,5 +68,7 @@ VALUES
         ,@Tags
         ,@Terrain
         ,@Special
-        ,@Cancelled)";
+        ,@Cancelled
+        ,@Latitude
+        ,@Longitude)";
 }

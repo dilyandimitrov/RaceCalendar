@@ -149,6 +149,9 @@ public class ExcelUpdaterService : IExcelUpdaterService
         CreateOrUpdateFlag<Terrains>(row, "I", race.Terrain);
         CreateOrUpdateFlag<Specials>(row, "J", race.Special);
         CreateOrUpdateFlag<Cancelled>(row, "L", race.Cancelled);
+
+        row.Cell("P").SetValue(race.Latitude);
+        row.Cell("Q").SetValue(race.Longitude);
     }
 
     private void UpdateRace(XLWorkbook workbook, Race race)
@@ -177,6 +180,9 @@ public class ExcelUpdaterService : IExcelUpdaterService
         CreateOrUpdateFlag<Terrains>(row, "I", race.Terrain);
         CreateOrUpdateFlag<Specials>(row, "J", race.Special);
         CreateOrUpdateFlag<Cancelled>(row, "L", race.Cancelled);
+
+        row.Cell("P").SetValue(race.Latitude);
+        row.Cell("Q").SetValue(race.Longitude);
     }
 
     private void CreateOrUpdateDistances(XLWorkbook workbook, Race race)
@@ -242,6 +248,8 @@ public class ExcelUpdaterService : IExcelUpdaterService
             row.Cell("H").SetValue(distance.ElevationGain);
             row.Cell("J").SetValue(distance.Link);
             row.Cell("K").SetValue(distance.ResultsLink);
+            row.Cell("M").SetValue(distance.Latitude);
+            row.Cell("N").SetValue(distance.Longitude);
 
             if (distance.Info is not null)
             {
@@ -273,6 +281,8 @@ public class ExcelUpdaterService : IExcelUpdaterService
             row.Cell("H").SetValue(distance.ElevationGain);
             row.Cell("J").SetValue(distance.Link);
             row.Cell("K").SetValue(distance.ResultsLink);
+            row.Cell("M").SetValue(distance.Latitude);
+            row.Cell("N").SetValue(distance.Longitude);
 
             UpdateInfos(workbook, race, distance);
         }

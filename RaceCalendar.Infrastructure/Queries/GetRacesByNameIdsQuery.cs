@@ -42,7 +42,9 @@ public class GetRacesByNameIdsQuery : IGetRacesByNameIdsQuery
                 r.Tags, 
                 r.Cancelled, 
                 r.Terrain, 
-                r.Special));
+                r.Special,
+                r.Latitude,
+                r.Longitude));
     }
 
     private sealed class RaceDto
@@ -59,6 +61,8 @@ public class GetRacesByNameIdsQuery : IGetRacesByNameIdsQuery
         public Terrains? Terrain { get; init; } = default!;
         public Specials? Special { get; init; } = default!;
         public Cancelled? Cancelled { get; init; } = default!;
+        public decimal? Latitude { get; init; } = default!;
+        public decimal? Longitude { get; init; } = default!;
     }
 
     private const string Sql = @$"
@@ -74,6 +78,8 @@ SELECT [Id] AS {nameof(RaceDto.Id)}
     ,[Terrain] AS {nameof(RaceDto.Terrain)}
     ,[Special] AS {nameof(RaceDto.Special)}
     ,[Cancelled] AS {nameof(RaceDto.Cancelled)}
+    ,[Latitude] AS {nameof(RaceDto.Latitude)}
+    ,[Longitude] AS {nameof(RaceDto.Longitude)}
 FROM [dbo].[Races]
 WHERE NameId IN @NameIds";
 }

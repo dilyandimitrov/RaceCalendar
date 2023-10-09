@@ -17,7 +17,9 @@ public class RaceDistance
         int? elevationGain,
         string? price,
         string? link,
-        string? resultsLink)
+        string? resultsLink,
+        decimal? latitude = null,
+        decimal? longitude = null)
     {
         Id = id;
         RaceId = raceId;
@@ -30,6 +32,8 @@ public class RaceDistance
         Price = price;
         Link = link;
         ResultsLink = resultsLink;
+        Latitude = latitude;
+        Longitude = longitude;
     }
 
     public int Id { get; set; }
@@ -43,6 +47,8 @@ public class RaceDistance
     public string? Price { get; set; }
     public string? Link { get; set; }
     public string? ResultsLink { get; set; }
+    public decimal? Latitude { get; set; }
+    public decimal? Longitude { get; set; }
 
     public IEnumerable<RaceInfo>? Info { get; set; } = default!;
     public bool IsDateConfirmed => true;

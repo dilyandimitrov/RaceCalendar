@@ -49,7 +49,9 @@ public class SearchRaceDistancesQuery : ISearchRaceDistancesQuery
                 d.ElevationGain, 
                 d.Price, 
                 d.Link, 
-                d.ResultsLink));
+                d.ResultsLink,
+                d.Latitude,
+                d.Longitude));
     }
 
     private sealed class RaceDistanceDto
@@ -65,6 +67,8 @@ public class SearchRaceDistancesQuery : ISearchRaceDistancesQuery
         public string Price { get; init; } = default!;
         public string Link { get; init; } = default!;
         public string ResultsLink { get; init; } = default!;
+        public decimal? Latitude { get; init; } = default!;
+        public decimal? Longitude { get; init; } = default!;
     }
 
     private const string SearchRaceDistancesSql = $@"

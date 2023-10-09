@@ -34,7 +34,9 @@ public class UpdateRaceCommand : IUpdateRaceCommand
             Tags = race.Tags,
             Terrain = race.Terrain,
             Special = race.Special,
-            Cancelled = race.Cancelled
+            Cancelled = race.Cancelled,
+            Latitude = race.Latitude,
+            Longitude = race.Longitude
         });
     }
 
@@ -50,6 +52,8 @@ SET [Name] = @Name,
     [Tags] = @Tags,
     [Terrain] = @Terrain,
     [Special] = @Special,
-    [Cancelled] = @Cancelled
+    [Cancelled] = @Cancelled,
+    [Latitude] = @Latitude,
+    [Longitude] = @Longitude
 WHERE Id = @Id";
 }

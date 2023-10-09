@@ -9,14 +9,17 @@ namespace RaceCalendar.Api.Controllers;
 public class RaceController : ControllerBase
 {
     private readonly ISearchRacesService _searchRacesService;
+    private readonly IGeoDataService _geoDataService;
     private readonly IRaceService _raceService;
 
     public RaceController(
-        ISearchRacesService searchRacesService, 
-        IRaceService raceService)
+        ISearchRacesService searchRacesService,
+        IRaceService raceService,
+        IGeoDataService geoDataService)
     {
         _searchRacesService = searchRacesService ?? throw new ArgumentNullException(nameof(searchRacesService));
         _raceService = raceService ?? throw new ArgumentNullException(nameof(raceService));
+        _geoDataService = geoDataService ?? throw new ArgumentNullException(nameof(geoDataService));
     }
 
     [HttpGet("search")]
@@ -42,6 +45,14 @@ public class RaceController : ControllerBase
         }
 
         var result = await _raceService.Get(id, distanceIds?.ToHashSet());
+
+        return Ok(result);
+    }
+
+    [HttpGet("geo-data")]
+    public async Task<IActionResult> GetGeoData([FromQuery] GetRacesFilterInput criteria)
+    {
+        var result = await _geoDataService.Search(criteria);
 
         return Ok(result);
     }

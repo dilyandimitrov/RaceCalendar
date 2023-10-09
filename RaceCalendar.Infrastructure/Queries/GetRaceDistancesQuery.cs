@@ -44,7 +44,9 @@ public class GetRaceDistancesQuery : IGetRaceDistancesQuery
                 d.ElevationGain,
                 d.Price,
                 d.Link,
-                d.ResultsLink))
+                d.ResultsLink,
+                d.Latitude,
+                d.Longitude))
             .ToList();
     }
 
@@ -61,6 +63,8 @@ public class GetRaceDistancesQuery : IGetRaceDistancesQuery
         public string Price { get; init; } = default!;
         public string Link { get; init; } = default!;
         public string ResultsLink { get; init; } = default!;
+        public decimal? Latitude { get; init; } = default!;
+        public decimal? Longitude { get; init; } = default!;
     }
 
     private const string Sql = $@"
@@ -75,6 +79,8 @@ SELECT [Id] AS {nameof(RaceDistanceDto.Id)}
       ,[Price] AS {nameof(RaceDistanceDto.Price)}
       ,[Link] AS {nameof(RaceDistanceDto.Link)}
       ,[ResultsLink] AS {nameof(RaceDistanceDto.ResultsLink)}
+      ,[Latitude] AS {nameof(RaceDistanceDto.Latitude)}
+      ,[Longitude] AS {nameof(RaceDistanceDto.Longitude)}
 FROM [dbo].[RaceDistances]
 WHERE RaceId = @RaceId AND 
 (Id IN @RaceDistanceIds OR @RaceDistanceIdsCount IS NULL)

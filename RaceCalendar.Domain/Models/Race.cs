@@ -17,7 +17,9 @@ public class Race
         string? tags, 
         Cancelled? cancelled, 
         Terrains? terrain, 
-        Specials? special)
+        Specials? special,
+        decimal? latitude = null,
+        decimal? longitude = null)
     {
         Id = id;
         Name = name;
@@ -31,6 +33,8 @@ public class Race
         Cancelled = cancelled;
         Terrain = terrain;
         Special = special;
+        Latitude = latitude;
+        Longitude = longitude;
     }
 
     public int Id { get; set; }
@@ -45,6 +49,8 @@ public class Race
     public Cancelled? Cancelled { get; set; }
     public Terrains? Terrain { get; set; }
     public Specials? Special { get; set; }
+    public decimal? Latitude { get; set; }
+    public decimal? Longitude { get; set; }
 
     public IEnumerable<RaceDistance> Distances { get; set; } = default!;
     public bool AllDistances { get; set; }

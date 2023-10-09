@@ -15,4 +15,6 @@ public record RaceUpdateRequest(
     int? Cancelled,
     int? Terrain,
     int? Special,
+    decimal? Latitude,
+    decimal? Longitude,
     IEnumerable<RaceDistanceUpdateRequest> Distances);

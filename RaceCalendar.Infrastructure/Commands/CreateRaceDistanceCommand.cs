@@ -33,7 +33,9 @@ public class CreateRaceDistanceCommand : ICreateRaceDistanceCommand
             ElevationGain = raceDistance.ElevationGain,
             Price = raceDistance.Price,
             Link = raceDistance.Link,
-            ResultsLink = raceDistance.ResultsLink
+            ResultsLink = raceDistance.ResultsLink,
+            Latitude = raceDistance.Latitude,
+            Longitude = raceDistance.Longitude
         });
     }
 
@@ -49,7 +51,9 @@ INSERT INTO [dbo].[RaceDistances]
         ,[ElevationGain]
         ,[Price]
         ,[Link]
-        ,[ResultsLink])
+        ,[ResultsLink]
+        ,[Latitude]
+        ,[Longitude])
 VALUES
         (@Id
         ,@RaceId
@@ -61,5 +65,7 @@ VALUES
         ,@ElevationGain
         ,@Price
         ,@Link
-        ,@ResultsLink)";
+        ,@ResultsLink
+        ,@Latitude
+        ,@Longitude)";
 }

@@ -33,7 +33,9 @@ public class UpdateRaceDistanceCommand : IUpdateRaceDistanceCommand
             ElevationGain = raceDistance.ElevationGain,
             Price = raceDistance.Price,
             Link = raceDistance.Link,
-            ResultsLink = raceDistance.ResultsLink
+            ResultsLink = raceDistance.ResultsLink,
+            Latitude = raceDistance.Latitude,
+            Longitude = raceDistance.Longitude
         });
     }
 
@@ -48,6 +50,8 @@ SET [RaceId] = @RaceId,
     [ElevationGain] = @ElevationGain,
     [Price] = @Price,
     [Link] = @Link,
-    [ResultsLink] = @ResultsLink
+    [ResultsLink] = @ResultsLink,
+    [Latitude] = @Latitude,
+    [Longitude] = @Longitude
 WHERE Id = @Id";
 }

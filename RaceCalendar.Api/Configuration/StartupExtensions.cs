@@ -48,6 +48,7 @@ namespace RaceCalendar.Api.Configuration
             services.AddScoped<IGetUserSettingsQuery, GetUserSettingsQuery>();
             services.AddScoped<IGetRacesByRaceIdsQuery, GetRacesByRaceIdsQuery>();
             services.AddScoped<IGetImportDataQuery, GetImportDataQuery>();
+            services.AddScoped<IGetGeoDataQuery, GetGeoDataQuery>();
 
             return services;
         }
@@ -97,6 +98,7 @@ namespace RaceCalendar.Api.Configuration
             services.AddScoped<IImportRaceService, ImportRaceService>();
             services.AddScoped<IExcelUpdaterService, ExcelUpdaterService>();
             services.AddScoped<ISystemInfoService, SystemInfoService>();
+            services.AddScoped<IGeoDataService, GeoDataService>();
 
             return services;
         }

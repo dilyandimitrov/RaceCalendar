@@ -150,10 +150,4 @@ ORDER BY R.StartDate DESC";
 (@StartDate IS NULL OR RD.StartDate >= @StartDate) AND
 (@EndDate IS NULL OR RD.StartDate <= @EndDate)
 ";
-
-    private const string SqlRaceDistanceCount = $@"
-SELECT COUNT(*)
-FROM dbo.RaceDistances
-WHERE RaceId = @RaceId
-";
 }

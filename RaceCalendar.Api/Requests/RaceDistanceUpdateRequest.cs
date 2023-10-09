@@ -11,4 +11,6 @@ public record RaceDistanceUpdateRequest(
     int? ELevationGain,
     string? Link,
     string? ResultsLink,
+    decimal? Latitude,
+    decimal? Longitude,
     IEnumerable<RaceInfoUpdateRequest>? Info);
