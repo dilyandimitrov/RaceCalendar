@@ -72,6 +72,9 @@ public class GeoDataService : IGeoDataService
                      );
             });
 
-        return racesPoints.Concat(distancesPoints);
+        return racesPoints
+            .Concat(distancesPoints)
+            .Where(p => p.Geometry.Coordinates.ToList() is not [0, 0])
+            .ToList();
     }
 }
