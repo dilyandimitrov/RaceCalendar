@@ -13,6 +13,7 @@ public class GeoDataService : IGeoDataService
     private readonly ISearchRacesValidatorService _searchRacesValidatorService;
     private readonly IGetGeoDataQuery _getGeoDataQuery;
     private readonly ISearchRaceDistancesQuery _getRaceDistancesQuery;
+    private readonly List<decimal> _emptyPoint = new() { 0, 0 };
 
     public GeoDataService(
         ISearchRacesValidatorService searchRacesValidatorService,
@@ -74,7 +75,7 @@ public class GeoDataService : IGeoDataService
 
         return racesPoints
             .Concat(distancesPoints)
-            .Where(p => p.Geometry.Coordinates.ToList() is not [0, 0])
+            .Where(p => !p.Geometry.Coordinates.ToList().SequenceEqual(_emptyPoint))
             .ToList();
     }
 }
