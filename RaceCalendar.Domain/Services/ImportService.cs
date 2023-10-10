@@ -168,6 +168,8 @@ Cache Lookups: {_cacheLookups}
                 Terrains? terrain = ParseFlag<Terrains>(row.ItemArray[8]);
                 Specials? special = ParseFlag<Specials>(row.ItemArray[9]);
                 Cancelled? cancelled = ParseFlag<Cancelled>(row.ItemArray[11]);
+                decimal? lat = ParseDecimal(row.ItemArray[15]);
+                decimal? lng = ParseDecimal(row.ItemArray[16]);
 
                 int? unconfirmedDate = null;
                 if (!isStartDateConfirmed)
@@ -188,7 +190,9 @@ Cache Lookups: {_cacheLookups}
                     tags: (special & Specials.Bfla) == Specials.Bfla ? "бфла" : string.Empty,
                     cancelled,
                     terrain,
-                    special);
+                    special,
+                    lat,
+                    lng);
 
                 var raceDb = await _raceService.Get(id.Value);
                 if (raceDb == null)
@@ -246,6 +250,8 @@ Cache Lookups: {_cacheLookups}
                 string price = row.ItemArray[8].ToString();
                 string link = row.ItemArray[9].ToString();
                 string resultsLink = row.ItemArray[10].ToString();
+                decimal? lat = ParseDecimal(row.ItemArray[12]);
+                decimal? lng = ParseDecimal(row.ItemArray[13]);
 
                 int? unconfirmedDate = null;
                 if (!isDateConfirmed)
@@ -265,7 +271,9 @@ Cache Lookups: {_cacheLookups}
                     elevationGain,
                     price,
                     link,
-                    resultsLink);
+                    resultsLink,
+                    lat,
+                    lng);
 
                 RaceDistance raceDistanceDb = race.Distances.FirstOrDefault(d => d.Id == id.Value);
                 if (raceDistanceDb == null)
@@ -419,6 +427,11 @@ Cache Lookups: {_cacheLookups}
     protected int? ParseInt(object data)
     {
         return int.TryParse(data.ToString(), out var dataInt) ? dataInt : null;
+    }
+
+    protected decimal? ParseDecimal(object data)
+    {
+        return decimal.TryParse(data.ToString(), out var dataDecimal) ? dataDecimal : null;
     }
 
     protected T? ParseFlag<T>(object data) where T : struct
