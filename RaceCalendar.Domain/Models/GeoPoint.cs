@@ -8,4 +8,4 @@ public record Geometry(string Type, IEnumerable<decimal> Coordinates);
 
 public record Properties(string Name, string NameId, IEnumerable<RaceDistanceSimple> Distances);
 
-public record RaceDistanceSimple(int Id, double? Distance);
+public record RaceDistanceSimple(int Id, double? Distance, Specials? Special);

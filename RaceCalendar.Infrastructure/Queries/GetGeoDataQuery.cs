@@ -47,7 +47,8 @@ public class GetGeoDataQuery : IGetGeoDataQuery
                     r.NameId,
                     r.Name,
                     r.Latitude,
-                    r.Longitude));
+                    r.Longitude,
+                    r.Special));
     }
 
     private sealed class RaceGeoDataDto
@@ -57,6 +58,7 @@ public class GetGeoDataQuery : IGetGeoDataQuery
         public string NameId { get; set; } = default!;
         public decimal Latitude { get; set; } = default!;
         public decimal Longitude { get; set; } = default!;
+        public Specials Special { get; set; } = default!;
     }
 
     private const string SearchRacesSql = $@"
@@ -70,7 +72,8 @@ AS
         R.Name AS [{nameof(RaceGeoDataDto.Name)}],
         R.NameId AS [{nameof(RaceGeoDataDto.NameId)}],
         R.Latitude AS [{nameof(RaceGeoDataDto.Latitude)}],
-        R.Longitude AS [{nameof(RaceGeoDataDto.Longitude)}]
+        R.Longitude AS [{nameof(RaceGeoDataDto.Longitude)}],
+        R.Special AS [{nameof(RaceGeoDataDto.Special)}]
     FROM 
         dbo.Races R INNER JOIN dbo.RaceDistances RD ON RD.RaceId = R.Id
     WHERE
@@ -84,7 +87,8 @@ SELECT DISTINCT TOP (@ShowPrevious)
     R.Name AS [{nameof(RaceGeoDataDto.Name)}],
     R.NameId AS [{nameof(RaceGeoDataDto.NameId)}],
     R.Latitude AS [{nameof(RaceGeoDataDto.Latitude)}],
-    R.Longitude AS [{nameof(RaceGeoDataDto.Longitude)}]
+    R.Longitude AS [{nameof(RaceGeoDataDto.Longitude)}],
+    R.Special AS [{nameof(RaceGeoDataDto.Special)}]
 FROM 
     dbo.Races R INNER JOIN dbo.RaceDistances RD ON RD.RaceId = R.Id
 WHERE

@@ -48,7 +48,7 @@ public class GeoDataService : IGeoDataService
                 new Geometry("Point", new List<decimal>() { g.Latitude, g.Longitude }),
                 new Properties(g.Name, g.NameId,
                     raceDistancesWithoutGeoData
-                        .Select(rd => new RaceDistanceSimple(rd.Id, rd.Distance))
+                        .Select(rd => new RaceDistanceSimple(rd.Id, rd.Distance, g.Special))
                         .ToList()
                         )
                 );
@@ -67,7 +67,7 @@ public class GeoDataService : IGeoDataService
                 return new GeoPoint("Feature",
                      new Geometry("Point", new List<decimal>() { latitude, longitude }),
                      new Properties(race.Name, race.NameId,
-                        gr.Select(rd => new RaceDistanceSimple(rd.Id, rd.Distance))
+                        gr.Select(rd => new RaceDistanceSimple(rd.Id, rd.Distance, race.Special))
                           .ToList()
                           )
                      );
