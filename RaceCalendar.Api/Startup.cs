@@ -1,3 +1,4 @@
+using System.Globalization;
 using System.Text;
 using Dapper.NodaTime;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -6,14 +7,17 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi.Any;
 using Microsoft.OpenApi.Models;
 using NodaTime;
 using NodaTime.Serialization.JsonNet;
 using NodaTime.Serialization.SystemTextJson;
 using RaceCalendar.Api.Configuration;
+using RaceCalendar.Api.JsonConverters;
 using RaceCalendar.Api.Utils;
 using RaceCalendar.Domain.Models.Authentication;
 using RaceCalendar.Infrastructure.DbContext;
+using static NodaTime.TimeZones.ZoneEqualityComparer;
 
 namespace RaceCalendar.Api
 {
@@ -34,6 +38,8 @@ namespace RaceCalendar.Api
                 .AddJsonOptions(options =>
                 {
                     options.JsonSerializerOptions.ConfigureForNodaTime(DateTimeZoneProviders.Tzdb);
+                    options.JsonSerializerOptions.Converters.Add(new DateOnlyConverter());
+                    options.JsonSerializerOptions.Converters.Add(new TimeOnlyConverter());
                 });
 
             services.AddLogging(x =>
@@ -46,6 +52,18 @@ namespace RaceCalendar.Api
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "RaceCalendar API", Version = "v1" });
+                c.MapType<TimeOnly>(() => new OpenApiSchema
+                {
+                    Type = "string",
+                    Format = "time",
+                    Example = new OpenApiString(TimeOnly.FromDateTime(DateTime.UtcNow).ToString("O", CultureInfo.InvariantCulture))
+                });
+                c.MapType<DateOnly>(() => new OpenApiSchema
+                {
+                    Type = "string",
+                    Format = "date",
+                    Example = new OpenApiString(DateOnly.FromDateTime(DateTime.UtcNow).ToString("O", CultureInfo.InvariantCulture))
+                });
             });
 
             services

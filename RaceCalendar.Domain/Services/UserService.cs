@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IdentityModel.Tokens.Jwt;
-using System.Linq;
+﻿using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
-using System.Threading.Tasks;
 using System.Web;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
@@ -64,6 +60,18 @@ namespace RaceCalendar.Domain.Services
         public async Task<User> GetByEmailAsync(string email)
         {
             var user = await _userManager.FindByEmailAsync(email);
+
+            if (user != null)
+            {
+                user.IsAdmin = await _userManager.IsInRoleAsync(user, "Admin");
+            }
+
+            return user;
+        }
+
+        public async Task<User> GetByIdAsync(string id)
+        {
+            var user = await _userManager.FindByIdAsync(id);
 
             if (user != null)
             {

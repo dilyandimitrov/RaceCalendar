@@ -1,7 +1,5 @@
 ﻿using RaceCalendar.Domain.Models.Authentication;
 using RaceCalendar.Domain.Responses;
-using System.Collections.Generic;
-using System.Threading.Tasks;
 
 namespace RaceCalendar.Domain.Services.Interfaces
 {
@@ -14,6 +12,7 @@ namespace RaceCalendar.Domain.Services.Interfaces
 
         Task<IEnumerable<GetAllUsersResponse>> GetAll();
         Task<User> GetByEmailAsync(string email);
+        Task<User> GetByIdAsync(string id);
         Task<AuthResult> Update(UpdateUserRequest request);
         Task<AuthResult> Delete(string email);
     }

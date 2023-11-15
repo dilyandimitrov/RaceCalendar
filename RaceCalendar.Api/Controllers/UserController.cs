@@ -76,13 +76,12 @@ public class UserController : ControllerBase
             return BadRequest();
         }
 
-        return Ok(new UserResponse()
-        {
-            Email = user.Email,
-            FirstName = user.FirstName,
-            LastName = user.LastName,
-            IsAdmin = user.IsAdmin
-        });
+        return Ok(new UserResponse(
+            user.Id, 
+            user.Email, 
+            user.FirstName, 
+            user.LastName, 
+            user.IsAdmin));
     }
 
     [HttpGet]

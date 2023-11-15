@@ -49,6 +49,8 @@ namespace RaceCalendar.Api.Configuration
             services.AddScoped<IGetRacesByRaceIdsQuery, GetRacesByRaceIdsQuery>();
             services.AddScoped<IGetImportDataQuery, GetImportDataQuery>();
             services.AddScoped<IGetGeoDataQuery, GetGeoDataQuery>();
+            services.AddScoped<IGetAllUpcomingEventsQuery, GetAllUpcomingEventsQuery>();
+            services.AddScoped<IGetEventQuery, GetEventQuery>();
 
             return services;
         }
@@ -75,6 +77,9 @@ namespace RaceCalendar.Api.Configuration
             services.AddScoped<IDeleteRaceInfosCommand, DeleteRaceInfosCommand>();
             services.AddScoped<IDeleteRaceDistanceCommand, DeleteRaceDistanceCommand>();
             services.AddScoped<IDeleteRaceCommand, DeleteRaceCommand>();
+            services.AddScoped<ICreateEventCommand, CreateEventCommand>();
+            services.AddScoped<IUpdateEventCommand, UpdateEventCommand>();
+            services.AddScoped<IDeleteEventCommand, DeleteEventCommand>();
 
             return services;
         }
@@ -99,6 +104,8 @@ namespace RaceCalendar.Api.Configuration
             services.AddScoped<IExcelUpdaterService, ExcelUpdaterService>();
             services.AddScoped<ISystemInfoService, SystemInfoService>();
             services.AddScoped<IGeoDataService, GeoDataService>();
+            services.AddScoped<IEventService, EventService>();
+            services.AddScoped<ISearchEventsService, SearchEventsService>();
 
             return services;
         }
