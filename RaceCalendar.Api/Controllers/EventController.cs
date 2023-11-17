@@ -5,6 +5,7 @@ using RaceCalendar.Api.Requests;
 using RaceCalendar.Api.Utils;
 using RaceCalendar.Domain.Models.Events;
 using RaceCalendar.Domain.Services.Interfaces;
+using System.Security;
 
 namespace RaceCalendar.Api.Controllers;
 
@@ -90,10 +91,23 @@ public class EventController : ControllerBase
 
     [HttpGet]
     [Route("get/{id}")]
-    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public async Task<Event> Get([FromRoute] long id)
     {
-        return await _eventService.Get(id);
+        var @event = await _eventService.Get(id);
+
+        if (@event.IsPublic)
+        {
+            return @event;
+        }
+
+        var isLoggedIn = HttpContext.Request.Headers.Authorization.FirstOrDefault() is not null;
+
+        if (!isLoggedIn) 
+        { 
+            throw new SecurityException(); 
+        }
+
+        return @event;
     }
 
     [HttpGet]
