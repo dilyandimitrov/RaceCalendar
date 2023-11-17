@@ -1,10 +1,6 @@
 ﻿using RaceCalendar.Domain.Models;
 using RaceCalendar.Domain.Queries;
 using RaceCalendar.Domain.Services.Interfaces;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace RaceCalendar.Domain.Services;
 
@@ -46,7 +42,7 @@ public class GeoDataService : IGeoDataService
             
             return new GeoPoint("Feature",
                 new Geometry("Point", new List<decimal>() { g.Latitude, g.Longitude }),
-                new Properties(g.Name, g.NameId,
+                new Properties(g.Name, g.NameId, g.StartDate,
                     raceDistancesWithoutGeoData
                         .Select(rd => new RaceDistanceSimple(rd.Id, rd.Distance, g.Special))
                         .ToList()
@@ -66,7 +62,7 @@ public class GeoDataService : IGeoDataService
 
                 return new GeoPoint("Feature",
                      new Geometry("Point", new List<decimal>() { latitude, longitude }),
-                     new Properties(race.Name, race.NameId,
+                     new Properties(race.Name, race.NameId, race.StartDate,
                         gr.Select(rd => new RaceDistanceSimple(rd.Id, rd.Distance, race.Special))
                           .ToList()
                           )

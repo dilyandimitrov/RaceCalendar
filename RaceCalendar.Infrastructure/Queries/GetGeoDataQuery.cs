@@ -3,10 +3,6 @@ using Microsoft.Data.SqlClient;
 using RaceCalendar.Domain.Models;
 using RaceCalendar.Domain.Queries;
 using RaceCalendar.Infrastructure.Persistence;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace RaceCalendar.Infrastructure.Queries;
 
@@ -48,7 +44,8 @@ public class GetGeoDataQuery : IGetGeoDataQuery
                     r.Name,
                     r.Latitude,
                     r.Longitude,
-                    r.Special));
+                    r.Special,
+                    r.StartDate));
     }
 
     private sealed class RaceGeoDataDto
@@ -59,6 +56,7 @@ public class GetGeoDataQuery : IGetGeoDataQuery
         public decimal Latitude { get; set; } = default!;
         public decimal Longitude { get; set; } = default!;
         public Specials Special { get; set; } = default!;
+        public DateTime StartDate { get; set; } = default!;
     }
 
     private const string SearchRacesSql = $@"
@@ -73,7 +71,8 @@ AS
         R.NameId AS [{nameof(RaceGeoDataDto.NameId)}],
         R.Latitude AS [{nameof(RaceGeoDataDto.Latitude)}],
         R.Longitude AS [{nameof(RaceGeoDataDto.Longitude)}],
-        R.Special AS [{nameof(RaceGeoDataDto.Special)}]
+        R.Special AS [{nameof(RaceGeoDataDto.Special)}],
+        R.StartDate AS [{nameof(RaceGeoDataDto.StartDate)}]
     FROM 
         dbo.Races R INNER JOIN dbo.RaceDistances RD ON RD.RaceId = R.Id
     WHERE
@@ -88,7 +87,8 @@ SELECT DISTINCT TOP (@ShowPrevious)
     R.NameId AS [{nameof(RaceGeoDataDto.NameId)}],
     R.Latitude AS [{nameof(RaceGeoDataDto.Latitude)}],
     R.Longitude AS [{nameof(RaceGeoDataDto.Longitude)}],
-    R.Special AS [{nameof(RaceGeoDataDto.Special)}]
+    R.Special AS [{nameof(RaceGeoDataDto.Special)}],
+    R.StartDate AS [{nameof(RaceGeoDataDto.StartDate)}]
 FROM 
     dbo.Races R INNER JOIN dbo.RaceDistances RD ON RD.RaceId = R.Id
 WHERE
