@@ -5,11 +5,11 @@ using RaceCalendar.Infrastructure.Persistence;
 
 namespace RaceCalendar.Infrastructure.Commands;
 
-public class DeleteEventCommand : IDeleteEventCommand
+public class DeleteEventCommentCommand : IDeleteEventCommentCommand
 {
     private readonly IConnectionProvider _connectionProvider;
 
-    public DeleteEventCommand(IConnectionProvider connectionProvider)
+    public DeleteEventCommentCommand(IConnectionProvider connectionProvider)
     {
         _connectionProvider = connectionProvider ?? throw new ArgumentNullException(nameof(connectionProvider));
     }
@@ -25,6 +25,11 @@ public class DeleteEventCommand : IDeleteEventCommand
     }
 
     private const string Sql = @"
-DELETE dbo.[Events]
+-- delete replies if any
+DELETE dbo.[EventComments]
+WHERE ParentCommentId = @Id;
+
+-- delete the parent comment
+DELETE dbo.[EventComments]
 WHERE Id = @Id";
 }

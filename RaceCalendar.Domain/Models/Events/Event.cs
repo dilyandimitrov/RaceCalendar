@@ -23,7 +23,8 @@ public class Event
         string? contact,
         string createdBy,
         DateTime createdOn,
-        DateTime? modifiedOn)
+        DateTime? modifiedOn,
+        long? commentsCount = null)
     {
         Id = id;
         Name = name;
@@ -44,26 +45,29 @@ public class Event
         CreatedBy = createdBy;
         CreatedOn = createdOn;
         ModifiedOn = modifiedOn;
+        CommentsCount = commentsCount;
     }
 
-    public long Id { get; set; }
-    public string Name { get; set; }
-    public string? Description { get; set; }
-    public string City { get; set; }
-    public decimal Latitude { get; set; }
-    public decimal Longitude { get; set; }
-    public LocalDate StartDate { get; set; }
-    public TimeSpan StartTime { get; set; }
-    public double? Distance { get; set; }
+    public long Id { get; init; }
+    public string Name { get; init; }
+    public string? Description { get; init; }
+    public string City { get; init; }
+    public decimal Latitude { get; init; }
+    public decimal Longitude { get; init; }
+    public LocalDate StartDate { get; init; }
+    public TimeSpan StartTime { get; init; }
+    public double? Distance { get; init; }
     public int? ElevationGain { get; set; }
-    public string? Link { get; set; }
-    public Terrains? Terrain { get; set; }
-    public Cancelled? Cancelled { get; set; }
-    public bool IsPublic { get; set; }
-    public int MaxParticipants { get; set; }
-    public string? Contact { get; set; }
-    public string CreatedBy { get; set; }
-    public DateTime CreatedOn { get; set; }
-    public DateTime? ModifiedOn { get; set; }
+    public string? Link { get; init; }
+    public Terrains? Terrain { get; init; }
+    public Cancelled? Cancelled { get; init; }
+    public bool IsPublic { get; init; }
+    public int MaxParticipants { get; init; }
+    public string? Contact { get; init; }
+    public string CreatedBy { get; init; }
+    public DateTime CreatedOn { get; init; }
+    public DateTime? ModifiedOn { get; init; }
+    public long? CommentsCount { get; set; }
+
     public UserForEvents? CreatedByUser { get; set; } = default!;
 }

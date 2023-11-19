@@ -1,6 +1,6 @@
 ﻿namespace RaceCalendar.Domain.Commands;
 
-public interface IDeleteEventCommand
+public interface IDeleteEventCommentCommand
 {
     Task Execute(long id);
 }

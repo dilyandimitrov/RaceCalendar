@@ -2,7 +2,7 @@
 
 namespace RaceCalendar.Domain.Commands;
 
-public interface IUpdateEventCommand
+public interface IUpdateEventCommentCommand
 {
-    Task Execute(Event @event);
+    Task Execute(EventComment eventComment);
 }
