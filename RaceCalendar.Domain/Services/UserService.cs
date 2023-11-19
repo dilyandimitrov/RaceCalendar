@@ -381,8 +381,6 @@ Eкипът на <a href=""http://racecalendar.bg/"" target=""_blank"" >racecale
 
             var isSendSucceeded = await _mailSender.SendAsync(user.Email, "Потвърди регистрация", body);
 
-            //var a = $"Потвърдите вашата регистрация като кликнете на линкa: {Environment.NewLine}{callbackUrl}";
-
             return isSendSucceeded;
         }
     }
