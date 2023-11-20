@@ -112,6 +112,7 @@ namespace RaceCalendar.Api.Configuration
             services.AddScoped<IEventService, EventService>();
             services.AddScoped<ISearchEventsService, SearchEventsService>();
             services.AddScoped<IEventCommentService, EventCommentService>();
+            services.AddScoped<ICreateEventCommentMessagingService, CreateEventCommentMessagingService>();
 
             return services;
         }
