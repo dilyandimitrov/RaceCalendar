@@ -3,7 +3,7 @@
 public class EventComment
 {
     public EventComment(
-        long id, 
+        long id,
         long eventId,
         long? parentCommentId,
         string text,

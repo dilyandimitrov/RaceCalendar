@@ -4,10 +4,6 @@ using NodaTime;
 using RaceCalendar.Domain.Models;
 using RaceCalendar.Domain.Queries;
 using RaceCalendar.Infrastructure.Persistence;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace RaceCalendar.Infrastructure.Queries;
 
@@ -42,13 +38,13 @@ public class SearchRaceDistancesQuery : ISearchRaceDistancesQuery
                 d.Id,
                 d.RaceId,
                 d.Name,
-                d.Distance, 
-                d.StartDate, 
-                d.StartTime, 
-                d.UnconfirmedDate, 
-                d.ElevationGain, 
-                d.Price, 
-                d.Link, 
+                d.Distance,
+                d.StartDate,
+                d.StartTime,
+                d.UnconfirmedDate,
+                d.ElevationGain,
+                d.Price,
+                d.Link,
                 d.ResultsLink,
                 d.Latitude,
                 d.Longitude));

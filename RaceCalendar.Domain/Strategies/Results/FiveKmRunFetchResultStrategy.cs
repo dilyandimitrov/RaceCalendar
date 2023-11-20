@@ -1,6 +1,3 @@
-using System;
-using System.Linq;
-using System.Threading.Tasks;
 using RaceCalendar.Domain.Models;
 
 namespace RaceCalendar.Domain.Strategies.Results;

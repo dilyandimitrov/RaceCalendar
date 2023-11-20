@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace RaceCalendar.Domain.Models;
+﻿namespace RaceCalendar.Domain.Models;
 
 public record GeoPoint(string Type, Geometry Geometry, Properties Properties);
 

@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace RaceCalendar.Domain.Models.Paging;
+﻿namespace RaceCalendar.Domain.Models.Paging;
 
 public class PagedResult<T> : PagedResultBase where T : class
 {

@@ -102,9 +102,9 @@ public class EventController : ControllerBase
 
         var isLoggedIn = HttpContext.Request.Headers.Authorization.FirstOrDefault() is not null;
 
-        if (!isLoggedIn) 
-        { 
-            throw new SecurityException(); 
+        if (!isLoggedIn)
+        {
+            throw new SecurityException();
         }
 
         return @event;

@@ -24,18 +24,18 @@ public class RaceController : ControllerBase
 
     [HttpGet("search")]
     public async Task<IActionResult> Search(
-        [FromQuery] GetRacesFilterInput criteria, 
-        [FromQuery]int page, 
-        [FromQuery]int pageSize)
+        [FromQuery] GetRacesFilterInput criteria,
+        [FromQuery] int page,
+        [FromQuery] int pageSize)
     {
         var result = await _searchRacesService.Search(criteria, page, pageSize);
-        
+
         return Ok(result);
     }
 
     [HttpGet("get/{id}")]
     public async Task<IActionResult> GetByDistances(
-        [FromRoute] string id, 
+        [FromRoute] string id,
         [FromQuery] string? distances)
     {
         List<int>? distanceIds = null;

@@ -77,10 +77,10 @@ public class UserController : ControllerBase
         }
 
         return Ok(new UserResponse(
-            user.Id, 
-            user.Email, 
-            user.FirstName, 
-            user.LastName, 
+            user.Id,
+            user.Email,
+            user.FirstName,
+            user.LastName,
             user.IsAdmin));
     }
 

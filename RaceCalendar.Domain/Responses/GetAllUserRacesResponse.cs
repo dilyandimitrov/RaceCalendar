@@ -1,5 +1,3 @@
-using System;
-
 namespace RaceCalendar.Domain.Responses
 {
     public class GetAllUserRacesResponse

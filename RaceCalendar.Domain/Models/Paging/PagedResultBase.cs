@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace RaceCalendar.Domain.Models.Paging;
+﻿namespace RaceCalendar.Domain.Models.Paging;
 
 public abstract class PagedResultBase
 {

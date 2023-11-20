@@ -30,16 +30,16 @@ public class GeoDataService : IGeoDataService
         if (geoData is null || !geoData.Any())
         {
             return Enumerable.Empty<GeoPoint>();
-        }    
+        }
 
         var raceIds = geoData.Select(r => r.Id).ToHashSet();
         var raceDistances = await _getRaceDistancesQuery.Get(filter, raceIds);
         var raceDistancesWithGeoData = raceDistances.Where(r => r.Longitude is not null && r.Latitude is not null).ToList();
-        
+
         var racesPoints = geoData.Select(g =>
         {
             var raceDistancesWithoutGeoData = raceDistances.Where(rd => rd.RaceId == g.Id && (rd.Longitude is null || rd.Latitude is null));
-            
+
             return new GeoPoint("Feature",
                 new Geometry("Point", new List<decimal>() { g.Latitude, g.Longitude }),
                 new Properties(g.Name, g.NameId, g.StartDate,
@@ -48,7 +48,7 @@ public class GeoDataService : IGeoDataService
                         .ToList()
                         )
                 );
-         });
+        });
 
         var distancesPoints = raceDistancesWithGeoData
             .GroupBy(rd => rd.Longitude + rd.Latitude)

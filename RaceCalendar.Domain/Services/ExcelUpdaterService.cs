@@ -3,11 +3,6 @@ using RaceCalendar.Domain.Commands;
 using RaceCalendar.Domain.Models;
 using RaceCalendar.Domain.Queries;
 using RaceCalendar.Domain.Services.Interfaces;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace RaceCalendar.Domain.Services;
 
@@ -340,7 +335,7 @@ public class ExcelUpdaterService : IExcelUpdaterService
         info.Id = infoId;
         info.RaceId = race.Id;
         info.RaceDistanceId = distance.Id;
-        
+
         row.Cell("A").SetValue(info.Id);
         row.Cell("B").SetValue(info.RaceId);
         row.Cell("C").SetValue(race.NameId);

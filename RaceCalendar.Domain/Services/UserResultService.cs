@@ -1,11 +1,6 @@
 ﻿using RaceCalendar.Domain.Models;
-using RaceCalendar.Domain.Models.Authentication;
 using RaceCalendar.Domain.Services.Interfaces;
 using RaceCalendar.Domain.Strategies.Results;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace RaceCalendar.Domain.Services;
 

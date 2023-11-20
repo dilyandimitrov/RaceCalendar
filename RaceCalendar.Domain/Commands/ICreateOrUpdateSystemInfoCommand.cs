@@ -1,6 +1,4 @@
-﻿using System.Threading.Tasks;
-
-namespace RaceCalendar.Domain.Commands;
+﻿namespace RaceCalendar.Domain.Commands;
 
 public interface ICreateOrUpdateSystemInfoCommand
 {

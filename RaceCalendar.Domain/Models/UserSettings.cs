@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace RaceCalendar.Domain.Models;
+﻿namespace RaceCalendar.Domain.Models;
 
 public record UserSettings
     (int Id,

@@ -1,6 +1,3 @@
-using System;
-using System.Collections.Generic;
-
 namespace RaceCalendar.Domain.Responses
 {
     public class GetAllUsersResponse

@@ -1,4 +1,3 @@
-using System.Threading.Tasks;
 using HtmlAgilityPack;
 using RaceCalendar.Domain.Models;
 

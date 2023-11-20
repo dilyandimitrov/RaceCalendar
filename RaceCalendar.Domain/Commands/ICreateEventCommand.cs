@@ -1,5 +1,4 @@
 ﻿using RaceCalendar.Domain.Models.Events;
-using System.Threading.Tasks;
 
 namespace RaceCalendar.Domain.Commands;
 

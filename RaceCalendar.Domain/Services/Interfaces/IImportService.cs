@@ -1,6 +1,4 @@
-﻿using System.Threading.Tasks;
-
-namespace RaceCalendar.Domain.Services.Interfaces;
+﻿namespace RaceCalendar.Domain.Services.Interfaces;
 
 public interface IImportRaceService
 {

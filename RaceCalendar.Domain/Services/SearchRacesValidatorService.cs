@@ -1,6 +1,5 @@
 ﻿using RaceCalendar.Domain.Models;
 using RaceCalendar.Domain.Services.Interfaces;
-using System;
 
 namespace RaceCalendar.Domain.Services;
 

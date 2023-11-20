@@ -1,16 +1,16 @@
-﻿using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
-using System.Text;
-using System.Web;
-using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
-using RaceCalendar.Domain.Models.Authentication;
-using RaceCalendar.Domain.Services.Interfaces;
-using RaceCalendar.Domain.Responses;
-using RaceCalendar.Domain.Queries;
 using RaceCalendar.Domain.Commands;
+using RaceCalendar.Domain.Models.Authentication;
+using RaceCalendar.Domain.Queries;
+using RaceCalendar.Domain.Responses;
+using RaceCalendar.Domain.Services.Interfaces;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using System.Text;
+using System.Web;
 
 namespace RaceCalendar.Domain.Services
 {

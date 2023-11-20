@@ -67,7 +67,7 @@ public class RaceAdminController : ControllerBase
 
     [HttpDelete]
     [Route("{raceId}")]
-    public async Task Delete([FromRoute]int raceId)
+    public async Task Delete([FromRoute] int raceId)
     {
         await _raceService.Delete(raceId);
     }

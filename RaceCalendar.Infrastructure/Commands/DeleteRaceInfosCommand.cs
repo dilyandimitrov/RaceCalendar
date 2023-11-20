@@ -2,9 +2,6 @@
 using Microsoft.Data.SqlClient;
 using RaceCalendar.Domain.Commands;
 using RaceCalendar.Infrastructure.Persistence;
-using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
 
 namespace RaceCalendar.Infrastructure.Commands;
 

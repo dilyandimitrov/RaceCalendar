@@ -1,6 +1,4 @@
 ﻿using RaceCalendar.Domain.Models;
-using RaceCalendar.Domain.Models.Authentication;
-using System.Threading.Tasks;
 
 namespace RaceCalendar.Domain.Services.Interfaces;
 

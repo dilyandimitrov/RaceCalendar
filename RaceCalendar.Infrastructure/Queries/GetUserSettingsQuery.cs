@@ -3,8 +3,6 @@ using Microsoft.Data.SqlClient;
 using RaceCalendar.Domain.Models;
 using RaceCalendar.Domain.Queries;
 using RaceCalendar.Infrastructure.Persistence;
-using System;
-using System.Threading.Tasks;
 
 namespace RaceCalendar.Infrastructure.Queries;
 

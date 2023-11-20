@@ -5,10 +5,6 @@ using RaceCalendar.Domain.Models;
 using RaceCalendar.Domain.Options;
 using RaceCalendar.Domain.Queries;
 using RaceCalendar.Domain.Services.Interfaces;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace RaceCalendar.Domain.Services;
 
@@ -39,13 +35,13 @@ public class RaceRequestService : IRaceRequestService
 
     public Task Create(RaceRequest raceRequest)
     {
-        if (!string.IsNullOrEmpty(raceRequest.ClientIP) && 
+        if (!string.IsNullOrEmpty(raceRequest.ClientIP) &&
             !IPAddressHelper.ValidateIPv4(raceRequest.ClientIP))
         {
             throw new ArgumentException("Not a valid IP address.");
         }
 
-        if (!string.IsNullOrEmpty(raceRequest.Source) && 
+        if (!string.IsNullOrEmpty(raceRequest.Source) &&
             !Uri.IsWellFormedUriString(raceRequest.Source, UriKind.RelativeOrAbsolute))
         {
             throw new ArgumentException("Not a valid source url.");
@@ -64,10 +60,10 @@ public class RaceRequestService : IRaceRequestService
             .ToHashSet();
         var races = await _getRacesByNameIdsQuery.Get(existingRaces);
 
-        foreach(var request in requests.Where(x => x.NameId is not null))
+        foreach (var request in requests.Where(x => x.NameId is not null))
         {
-            request.OldStartDate = races.TryGetValue(request.NameId!, out var race) ? 
-                race?.StartDate : 
+            request.OldStartDate = races.TryGetValue(request.NameId!, out var race) ?
+                race?.StartDate :
                 null;
         }
 

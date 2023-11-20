@@ -1,22 +1,21 @@
 ﻿using NodaTime;
-using System.Collections.Generic;
 
 namespace RaceCalendar.Domain.Models;
 
 public class Race
 {
     public Race(
-        int id, 
-        string name, 
-        string nameId, 
-        string? country, 
+        int id,
+        string name,
+        string nameId,
+        string? country,
         string? city,
         LocalDate? startDate,
         LocalDate? endDate,
-        string? link, 
-        string? tags, 
-        Cancelled? cancelled, 
-        Terrains? terrain, 
+        string? link,
+        string? tags,
+        Cancelled? cancelled,
+        Terrains? terrain,
         Specials? special,
         decimal? latitude = null,
         decimal? longitude = null)

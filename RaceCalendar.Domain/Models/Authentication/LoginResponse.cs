@@ -1,5 +1,3 @@
-using System;
-
 namespace RaceCalendar.Domain.Models.Authentication
 {
     public class LoginResponse : AuthResult

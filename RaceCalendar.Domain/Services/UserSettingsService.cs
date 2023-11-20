@@ -2,8 +2,6 @@
 using RaceCalendar.Domain.Models;
 using RaceCalendar.Domain.Queries;
 using RaceCalendar.Domain.Services.Interfaces;
-using System;
-using System.Threading.Tasks;
 
 namespace RaceCalendar.Domain.Services;
 

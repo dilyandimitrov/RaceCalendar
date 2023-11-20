@@ -18,7 +18,7 @@ public class RaceRequestController : ControllerBase
     }
 
     [HttpPost]
-    public async Task<IActionResult> Create([FromBody]RaceRequest raceRequest)
+    public async Task<IActionResult> Create([FromBody] RaceRequest raceRequest)
     {
         await _raceRequestService.Create(raceRequest);
 

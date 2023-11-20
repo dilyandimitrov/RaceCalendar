@@ -1,6 +1,3 @@
-using System;
-using System.Collections.Generic;
-
 namespace RaceCalendar.Domain.Models.Authentication
 {
     public class ErrorResult

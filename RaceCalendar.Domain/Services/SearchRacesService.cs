@@ -2,9 +2,6 @@
 using RaceCalendar.Domain.Models.Paging;
 using RaceCalendar.Domain.Queries;
 using RaceCalendar.Domain.Services.Interfaces;
-using System;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace RaceCalendar.Domain.Services;
 
@@ -49,8 +46,8 @@ public class SearchRacesService : ISearchRacesService
                 race.Distances = distances;
             }
 
-            race.AllDistances = 
-                distanceCountsMap.TryGetValue(race.Id, out var distancesCount) && 
+            race.AllDistances =
+                distanceCountsMap.TryGetValue(race.Id, out var distancesCount) &&
                 race.Distances.Count() == distancesCount;
         }
 

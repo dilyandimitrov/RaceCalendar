@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace RaceCalendar.Domain.Models
+﻿namespace RaceCalendar.Domain.Models
 {
     public record UserRace
         (int? Id,
@@ -14,16 +12,16 @@ namespace RaceCalendar.Domain.Models
         string? Position)
     {
         public UserRace(
-            int? id, 
-            string userId, 
-            UserRaceTypes type, 
-            int raceId, 
-            int? raceDistanceId, 
-            DateTime? createdOn, 
-            string? result, 
-            ResultTypes? resultType, 
-            string? position, 
-            string? description) 
+            int? id,
+            string userId,
+            UserRaceTypes type,
+            int raceId,
+            int? raceDistanceId,
+            DateTime? createdOn,
+            string? result,
+            ResultTypes? resultType,
+            string? position,
+            string? description)
             : this(id, userId, type, raceId, raceDistanceId, createdOn, result, resultType, position)
         {
             Description = description;

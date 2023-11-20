@@ -4,10 +4,6 @@ using NodaTime;
 using RaceCalendar.Domain.Models;
 using RaceCalendar.Domain.Queries;
 using RaceCalendar.Infrastructure.Persistence;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace RaceCalendar.Infrastructure.Queries;
 
@@ -31,17 +27,17 @@ public class GetRacesByNameIdsQuery : IGetRacesByNameIdsQuery
 
         return races
             .ToDictionary(r => r.NameId, r => new Race(
-                r.Id, 
-                r.Name, 
-                r.NameId, 
-                r.Country, 
-                r.City, 
-                r.StartDate, 
-                r.EndDate, 
-                r.Link, 
-                r.Tags, 
-                r.Cancelled, 
-                r.Terrain, 
+                r.Id,
+                r.Name,
+                r.NameId,
+                r.Country,
+                r.City,
+                r.StartDate,
+                r.EndDate,
+                r.Link,
+                r.Tags,
+                r.Cancelled,
+                r.Terrain,
                 r.Special,
                 r.Latitude,
                 r.Longitude));

@@ -68,11 +68,11 @@ public class EventCommentController : ControllerBase
     }
 
     [HttpGet]
-    public async Task<IEnumerable<EventCommentResponse>> GetComments([FromQuery]long eventId)
+    public async Task<IEnumerable<EventCommentResponse>> GetComments([FromQuery] long eventId)
     {
         var @event = await _getEventQuery.QueryAsync(eventId);
         var isLoggedIn = HttpContext.Request.Headers.Authorization.FirstOrDefault() is not null;
-        
+
         if (!@event.IsPublic && !isLoggedIn)
         {
             throw new SecurityException();
@@ -93,14 +93,14 @@ public class EventCommentController : ControllerBase
                     repliesGroups
                         .FirstOrDefault(g => g.Key == c.Id)
                         ?.Select(c => new EventCommentResponse(
-                            c.Id, 
+                            c.Id,
                             c.EventId,
                             c.Text,
                             null,
                             c.CreatedOn,
                             c.ModifiedOn,
                             c.CreatedBy,
-                            c.CreatedByUser!.FirstName, 
+                            c.CreatedByUser!.FirstName,
                             c.CreatedByUser!.LastName))
                         .ToList(),
                     c.CreatedOn,

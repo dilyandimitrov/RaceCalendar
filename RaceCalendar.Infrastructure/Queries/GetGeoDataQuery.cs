@@ -36,7 +36,7 @@ public class GetGeoDataQuery : IGetGeoDataQuery
             return Enumerable.Empty<RaceGeoData>();
         }
 
-        return 
+        return
             races.Select(r =>
                 new RaceGeoData(
                     r.Id,

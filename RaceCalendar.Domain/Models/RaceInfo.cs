@@ -3,10 +3,10 @@
 public class RaceInfo
 {
     public RaceInfo(
-        int id, 
-        int raceId, 
-        int raceDistanceId, 
-        string name, 
+        int id,
+        int raceId,
+        int raceDistanceId,
+        string name,
         string? value)
     {
         Id = id;

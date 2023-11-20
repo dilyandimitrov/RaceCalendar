@@ -1,5 +1,3 @@
-using System.Globalization;
-using System.Text;
 using Dapper.NodaTime;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.DataProtection;
@@ -17,7 +15,8 @@ using RaceCalendar.Api.JsonConverters;
 using RaceCalendar.Api.Utils;
 using RaceCalendar.Domain.Models.Authentication;
 using RaceCalendar.Infrastructure.DbContext;
-using static NodaTime.TimeZones.ZoneEqualityComparer;
+using System.Globalization;
+using System.Text;
 
 namespace RaceCalendar.Api
 {
@@ -157,7 +156,7 @@ namespace RaceCalendar.Api
 
             app.UseAuthentication();
             app.UseAuthorization();
-            
+
             app.UseSwagger();
             app.UseSwaggerUI(options =>
             {

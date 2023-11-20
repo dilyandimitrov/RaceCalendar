@@ -1,9 +1,6 @@
 ﻿using Microsoft.Extensions.Caching.Memory;
 using RaceCalendar.Domain.Models;
 using RaceCalendar.Domain.Queries;
-using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
 
 namespace RaceCalendar.Infrastructure.Queries.Caching;
 

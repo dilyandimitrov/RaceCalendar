@@ -1,7 +1,4 @@
-﻿using System;
-using System.Linq;
-
-namespace RaceCalendar.Domain.Helpers;
+﻿namespace RaceCalendar.Domain.Helpers;
 
 public static class IPAddressHelper
 {

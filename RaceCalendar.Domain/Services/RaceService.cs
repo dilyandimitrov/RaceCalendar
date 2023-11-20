@@ -1,11 +1,7 @@
-﻿using RaceCalendar.Domain.Models;
+﻿using RaceCalendar.Domain.Commands;
+using RaceCalendar.Domain.Models;
 using RaceCalendar.Domain.Queries;
 using RaceCalendar.Domain.Services.Interfaces;
-using System;
-using System.Linq;
-using System.Collections.Generic;
-using System.Threading.Tasks;
-using RaceCalendar.Domain.Commands;
 
 namespace RaceCalendar.Domain.Services;
 
@@ -175,7 +171,7 @@ public class RaceService : IRaceService
                         .Where(d => !race.Distances.Select(x => x.Id).Contains(d.Id))
                         .Select(x => x.Id)
                         .ToHashSet();
-        
+
         var infoIdsToDelete = raceDb.Distances
                         .Where(d => distanceIdsToDelete.Contains(d.Id) && d.Info is not null)
                         .SelectMany(d => d.Info!.Select(i => i.Id))
