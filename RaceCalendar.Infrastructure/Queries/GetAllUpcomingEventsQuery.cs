@@ -24,7 +24,6 @@ public class GetAllUpcomingEventsQuery : IGetAllUpcomingEventsQuery
         var result = await conn.QueryAsync<EventDto>(Sql,
             new
             {
-                Now = DateTime.UtcNow,
                 ShowPublicOnly = showPublicOnly
             });
 
@@ -54,6 +53,8 @@ public class GetAllUpcomingEventsQuery : IGetAllUpcomingEventsQuery
     }
 
     private const string Sql = $@"
+DECLARE @Now DATETIME = SYSDATETIMEOFFSET() AT TIME ZONE 'FLE Standard Time'
+
 SELECT *
 FROM dbo.[Events] e
 OUTER APPLY 
@@ -62,8 +63,9 @@ OUTER APPLY
    FROM dbo.[EventComments] ec
    WHERE ec.EventId = e.Id
 ) c
-WHERE e.StartDate > @Now AND
-(@ShowPublicOnly = 0 OR e.IsPublic = @ShowPublicOnly)";
+WHERE CAST(e.StartDate AS DATETIME) + CAST(e.StartTime AS DATETIME) >= @Now AND
+(@ShowPublicOnly = 0 OR e.IsPublic = @ShowPublicOnly)
+ORDER BY e.StartDate, e.StartTime";
 
     private sealed class EventDto
     {
