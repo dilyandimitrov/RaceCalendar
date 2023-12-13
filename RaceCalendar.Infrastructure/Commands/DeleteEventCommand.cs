@@ -25,6 +25,9 @@ public class DeleteEventCommand : IDeleteEventCommand
     }
 
     private const string Sql = @"
+DELETE dbo.[EventComments]
+WHERE EventId = @Id
+
 DELETE dbo.[Events]
 WHERE Id = @Id";
 }
