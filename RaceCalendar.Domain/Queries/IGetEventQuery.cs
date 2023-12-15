@@ -4,5 +4,5 @@ namespace RaceCalendar.Domain.Queries;
 
 public interface IGetEventQuery
 {
-    Task<Event> QueryAsync(long id);
+    Task<Event?> QueryAsync(long id);
 }

@@ -17,7 +17,7 @@ public class GetEventQuery : IGetEventQuery
         _connectionProvider = connectionProvider ?? throw new ArgumentNullException(nameof(connectionProvider));
     }
 
-    public async Task<Event> QueryAsync(long id)
+    public async Task<Event?> QueryAsync(long id)
     {
         using var conn = new SqlConnection(_connectionProvider.GetConnection());
 
@@ -26,6 +26,11 @@ public class GetEventQuery : IGetEventQuery
             {
                 Id = id
             });
+
+        if (result is null)
+        {
+            return null;
+        }
 
         return new Event(
                 result.Id,

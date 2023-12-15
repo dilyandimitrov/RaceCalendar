@@ -98,6 +98,7 @@ namespace RaceCalendar.Api
                 };
             });
 
+            services.AddSingleton<IClock>(SystemClock.Instance);
             services.AddRaceCalendarInfrastructure(_configuration);
 
             services.Configure<IdentityOptions>(options =>

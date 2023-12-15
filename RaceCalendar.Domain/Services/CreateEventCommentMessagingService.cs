@@ -28,6 +28,11 @@ public class CreateEventCommentMessagingService : ICreateEventCommentMessagingSe
     {
         var @event = await _getEventQuery.QueryAsync(eventComment.EventId);
 
+        if (@event is null)
+        {
+            return;
+        }
+
         var commentOnYourOwnEvent = @event.CreatedBy == eventComment.CreatedBy;
         if (commentOnYourOwnEvent)
         {

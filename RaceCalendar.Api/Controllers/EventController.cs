@@ -91,9 +91,14 @@ public class EventController : ControllerBase
 
     [HttpGet]
     [Route("get/{id}")]
-    public async Task<Event> Get([FromRoute] long id)
+    public async Task<ActionResult<Event>> Get([FromRoute] long id)
     {
         var @event = await _eventService.Get(id);
+
+        if (@event is null)
+        {
+            return NoContent();
+        }
 
         if (@event.IsPublic)
         {

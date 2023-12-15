@@ -71,6 +71,12 @@ public class EventCommentController : ControllerBase
     public async Task<IEnumerable<EventCommentResponse>> GetComments([FromQuery] long eventId)
     {
         var @event = await _getEventQuery.QueryAsync(eventId);
+
+        if (@event is null)
+        {
+            return Enumerable.Empty<EventCommentResponse>();
+        }
+
         var isLoggedIn = HttpContext.Request.Headers.Authorization.FirstOrDefault() is not null;
 
         if (!@event.IsPublic && !isLoggedIn)
