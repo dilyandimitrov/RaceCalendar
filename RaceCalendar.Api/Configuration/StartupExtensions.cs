@@ -85,6 +85,7 @@ namespace RaceCalendar.Api.Configuration
             services.AddScoped<ICreateEventCommentCommand, CreateEventCommentCommand>();
             services.AddScoped<IDeleteEventCommentCommand, DeleteEventCommentCommand>();
             services.AddScoped<IUpdateEventCommentCommand, UpdateEventCommentCommand>();
+            services.AddScoped<IUpdateEventVisitorsCountCommand, UpdateEventVisitorsCountCommand>();
 
             return services;
         }

@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using RaceCalendar.Api.Requests;
 using RaceCalendar.Api.Utils;
+using RaceCalendar.Domain.Commands;
 using RaceCalendar.Domain.Models.Events;
 using RaceCalendar.Domain.Services.Interfaces;
 using System.Security;
@@ -15,13 +16,16 @@ public class EventController : ControllerBase
 {
     private readonly IEventService _eventService;
     private readonly ISearchEventsService _searchEventsService;
+    private readonly IUpdateEventVisitorsCountCommand _updateEventVisitorsCountCommand;
 
     public EventController(
         IEventService eventService,
-        ISearchEventsService searchEventsService)
+        ISearchEventsService searchEventsService,
+        IUpdateEventVisitorsCountCommand updateEventVisitorsCountCommand)
     {
         _eventService = eventService ?? throw new ArgumentNullException(nameof(eventService));
         _searchEventsService = searchEventsService ?? throw new ArgumentNullException(nameof(searchEventsService));
+        _updateEventVisitorsCountCommand = updateEventVisitorsCountCommand ?? throw new ArgumentNullException(nameof(updateEventVisitorsCountCommand));
     }
 
     [HttpPost]
@@ -91,6 +95,8 @@ public class EventController : ControllerBase
 
     [HttpGet]
     [Route("get/{id}")]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+    [AllowAnonymous]
     public async Task<ActionResult<Event>> Get([FromRoute] long id)
     {
         var @event = await _eventService.Get(id);
@@ -100,16 +106,22 @@ public class EventController : ControllerBase
             return NoContent();
         }
 
-        if (@event.IsPublic)
-        {
-            return @event;
-        }
-
         var isLoggedIn = HttpContext.Request.Headers.Authorization.FirstOrDefault() is not null;
-
-        if (!isLoggedIn)
+        if (!@event.IsPublic && !isLoggedIn)
         {
             throw new SecurityException();
+        }
+
+        if (!isLoggedIn || @event.CreatedBy != User.GetUserId())
+        {
+            var visitorsCount = (@event.VisitorsCount ?? 0) + 1;
+            await _updateEventVisitorsCountCommand.Execute(@event.Id, visitorsCount);
+            @event.VisitorsCount = visitorsCount;
+        }
+
+        if (!User.Claims.Any() || User.GetUserId() != @event.CreatedBy)
+        {
+            @event.VisitorsCount = null;
         }
 
         return @event;

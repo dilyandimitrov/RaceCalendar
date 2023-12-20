@@ -24,7 +24,8 @@ public class Event
         string createdBy,
         DateTime createdOn,
         DateTime? modifiedOn,
-        long? commentsCount = null)
+        long? commentsCount = null,
+        long? visitorsCount = null)
     {
         Id = id;
         Name = name;
@@ -46,6 +47,7 @@ public class Event
         CreatedOn = createdOn;
         ModifiedOn = modifiedOn;
         CommentsCount = commentsCount;
+        VisitorsCount = visitorsCount;
     }
 
     public long Id { get; init; }
@@ -69,5 +71,6 @@ public class Event
     public DateTime? ModifiedOn { get; init; }
     public long? CommentsCount { get; set; }
 
+    public long? VisitorsCount { get; set; }
     public UserForEvents? CreatedByUser { get; set; } = default!;
 }

@@ -52,7 +52,8 @@ public class GetEventQuery : IGetEventQuery
                 result.CreatedBy,
                 result.CreatedOn,
                 result.ModifiedOn,
-                null);
+                null,
+                result.VisitorsCount);
     }
 
     private const string Sql = $@"
@@ -80,6 +81,7 @@ WHERE Id = @Id
         public int MaxParticipants { get; init; }
         public string? Contact { get; init; }
         public string CreatedBy { get; init; } = default!;
+        public long? VisitorsCount { get; init; } = default!;
         public DateTime CreatedOn { get; init; }
         public DateTime? ModifiedOn { get; init; }
     }
