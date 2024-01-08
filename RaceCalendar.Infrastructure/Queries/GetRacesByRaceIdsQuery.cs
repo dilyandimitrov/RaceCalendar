@@ -38,7 +38,9 @@ public class GetRacesByRaceIdsQuery : IGetRacesByRaceIdsQuery
                 r.Tags,
                 null,
                 r.Terrain,
-                r.Special));
+                r.Special,
+                r.Latitude,
+                r.Longitude));
     }
 
     private sealed class RaceDto
@@ -54,6 +56,8 @@ public class GetRacesByRaceIdsQuery : IGetRacesByRaceIdsQuery
         public string Tags { get; init; } = default!;
         public Terrains Terrain { get; init; } = default!;
         public Specials Special { get; init; } = default!;
+        public decimal? Latitude { get; set; } = default!;
+        public decimal? Longitude { get; set; } = default!;
     }
 
     private const string Sql = @$"
@@ -67,7 +71,9 @@ SELECT [Id] AS {nameof(RaceDto.Id)}
     ,[Link] AS {nameof(RaceDto.Link)}
     ,[Tags] AS {nameof(RaceDto.Tags)}
     ,[Terrain] AS {nameof(RaceDto.Terrain)}
-    ,[Special]AS {nameof(RaceDto.Special)}
+    ,[Special] AS {nameof(RaceDto.Special)}
+    ,[Latitude] AS {nameof(RaceDto.Latitude)}
+    ,[Longitude] AS {nameof(RaceDto.Longitude)}
 FROM [dbo].[Races]
 WHERE Id IN @RaceIds";
 }
