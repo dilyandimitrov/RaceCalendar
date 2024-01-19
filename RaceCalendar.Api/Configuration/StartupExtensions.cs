@@ -1,4 +1,6 @@
-﻿using RaceCalendar.Domain.Commands;
+﻿using Microsoft.AspNetCore.Identity;
+using RaceCalendar.Domain.Clients;
+using RaceCalendar.Domain.Commands;
 using RaceCalendar.Domain.Options;
 using RaceCalendar.Domain.Queries;
 using RaceCalendar.Domain.Services;
@@ -114,6 +116,13 @@ namespace RaceCalendar.Api.Configuration
             services.AddScoped<ISearchEventsService, SearchEventsService>();
             services.AddScoped<IEventCommentService, EventCommentService>();
             services.AddScoped<ICreateEventCommentMessagingService, CreateEventCommentMessagingService>();
+
+            services.AddOptions<DiscordOptions>()
+                .Bind(configuration.GetSection(nameof(DiscordOptions)))
+                .ValidateDataAnnotations();
+            services.AddScoped<IRaceNotificationService, RaceNotificationService>();
+            services.AddScoped<IEventNotificationService, EventNotificationService>();
+            services.AddHttpClient<IDiscordWebhookClient, DiscordWebhookClient>();
 
             return services;
         }

@@ -50,7 +50,7 @@ public class Event
         VisitorsCount = visitorsCount;
     }
 
-    public long Id { get; init; }
+    public long Id { get; set; }
     public string Name { get; init; }
     public string? Description { get; init; }
     public string City { get; init; }

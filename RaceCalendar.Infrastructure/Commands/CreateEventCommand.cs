@@ -19,7 +19,7 @@ public class CreateEventCommand : ICreateEventCommand
     {
         using var conn = new SqlConnection(_connectionProvider.GetConnection());
 
-        await conn.ExecuteAsync(Sql, new
+        var id = await conn.QuerySingleAsync<long>(Sql, new
         {
             Name = @event.Name,
             Description = @event.Description,
@@ -39,6 +39,8 @@ public class CreateEventCommand : ICreateEventCommand
             CreatedBy = @event.CreatedBy,
             CreatedOn = DateTime.UtcNow
         });
+        
+        @event.Id = id;
     }
 
     private const string Sql = @"
@@ -61,6 +63,7 @@ INSERT INTO [dbo].[Events]
         ,[CreatedBy]
         ,[CreatedOn]
         )
+OUTPUT INSERTED.Id
 VALUES
         (@Name
         ,@Description

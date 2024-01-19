@@ -15,6 +15,7 @@ public class EventService : IEventService
     private readonly IGetEventQuery _getEventQuery;
     private readonly IUserService _userService;
     private readonly IClock _clock;
+    private readonly IEventNotificationService _eventNotificationService;
 
     public EventService(
         ICreateEventCommand createEventCommand,
@@ -22,7 +23,8 @@ public class EventService : IEventService
         IDeleteEventCommand deleteEventCommand,
         IGetEventQuery getEventQuery,
         IUserService userService,
-        IClock clock)
+        IClock clock,
+        IEventNotificationService eventNotificationService)
     {
         _createEventCommand = createEventCommand ?? throw new ArgumentNullException(nameof(createEventCommand));
         _updateEventCommand = updateEventCommand ?? throw new ArgumentNullException(nameof(updateEventCommand));
@@ -30,11 +32,13 @@ public class EventService : IEventService
         _getEventQuery = getEventQuery ?? throw new ArgumentNullException(nameof(getEventQuery));
         _userService = userService ?? throw new ArgumentNullException(nameof(userService));
         _clock = clock ?? throw new ArgumentNullException(nameof(clock));
+        _eventNotificationService = eventNotificationService ?? throw new ArgumentNullException(nameof(eventNotificationService));
     }
 
     public async Task Create(Event @event)
     {
         await _createEventCommand.Execute(@event);
+        await _eventNotificationService.NotifyNewEvent(@event);
     }
 
     public async Task Delete(long id, string userId)

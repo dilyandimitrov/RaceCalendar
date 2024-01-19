@@ -36,7 +36,7 @@ public class GetRacesByRaceIdsQuery : IGetRacesByRaceIdsQuery
                 r.EndDate,
                 r.Link,
                 r.Tags,
-                null,
+                r.Cancelled,
                 r.Terrain,
                 r.Special,
                 r.Latitude,
@@ -54,6 +54,7 @@ public class GetRacesByRaceIdsQuery : IGetRacesByRaceIdsQuery
         public LocalDate? EndDate { get; init; } = default!;
         public string Link { get; init; } = default!;
         public string Tags { get; init; } = default!;
+        public Cancelled Cancelled { get; init; } = default!;
         public Terrains Terrain { get; init; } = default!;
         public Specials Special { get; init; } = default!;
         public decimal? Latitude { get; set; } = default!;
@@ -70,6 +71,7 @@ SELECT [Id] AS {nameof(RaceDto.Id)}
     ,[EndDate] AS {nameof(RaceDto.EndDate)}
     ,[Link] AS {nameof(RaceDto.Link)}
     ,[Tags] AS {nameof(RaceDto.Tags)}
+    ,[Cancelled] AS {nameof(RaceDto.Cancelled)}
     ,[Terrain] AS {nameof(RaceDto.Terrain)}
     ,[Special] AS {nameof(RaceDto.Special)}
     ,[Latitude] AS {nameof(RaceDto.Latitude)}

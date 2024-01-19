@@ -22,6 +22,7 @@ public class RaceService : IRaceService
     private readonly ISystemInfoService _systemInfoService;
     private readonly ICreateRaceCommand _createRaceCommand;
     private readonly IDeleteRaceCommand _deleteRaceCommand;
+    private readonly IRaceNotificationService _raceNotificationService;
 
     public RaceService(
         IGetRacesByNameIdsQuery getRacesByNameIdsQuery,
@@ -38,7 +39,8 @@ public class RaceService : IRaceService
         ICreateRaceInfoCommand createRaceInfoCommand,
         ISystemInfoService systemInfoService,
         ICreateRaceCommand createRaceCommand,
-        IDeleteRaceCommand deleteRaceCommand)
+        IDeleteRaceCommand deleteRaceCommand,
+        IRaceNotificationService raceNotificationService)
     {
         _getRacesByNameIdsQuery = getRacesByNameIdsQuery ?? throw new ArgumentNullException(nameof(getRacesByNameIdsQuery));
         _getRacesByRaceIdsQuery = getRacesByRaceIdsQuery ?? throw new ArgumentNullException(nameof(getRacesByRaceIdsQuery));
@@ -55,6 +57,7 @@ public class RaceService : IRaceService
         _systemInfoService = systemInfoService ?? throw new ArgumentNullException(nameof(systemInfoService));
         _createRaceCommand = createRaceCommand ?? throw new ArgumentNullException(nameof(createRaceCommand));
         _deleteRaceCommand = deleteRaceCommand ?? throw new ArgumentNullException(nameof(deleteRaceCommand));
+        _raceNotificationService = raceNotificationService ?? throw new ArgumentNullException(nameof(raceNotificationService));
     }
 
     public async Task Update(Race race)
@@ -145,10 +148,12 @@ public class RaceService : IRaceService
             }
 
             await _createRaceCommand.Execute(race);
+            await _raceNotificationService.NotifyNewRace(race);
         }
         else
         {
             await _updateRaceCommand.Execute(race);
+            await _raceNotificationService.NotifyChange(raceDb, race);
         }
     }
 

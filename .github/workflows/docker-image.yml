@@ -20,6 +20,12 @@ jobs:
     - name: Replace jwt secret
       run: git grep -l '<JWT_SECRET>' | xargs sed -i 's/<JWT_SECRET>/${{secrets.JWT_SECRET}}/g'
       shell: bash
+    - name: Replace discord changes webhook
+      run: git grep -l '<DISCORD_CHANGES_WEBHOOK>' | xargs sed -i 's/<DISCORD_CHANGES_WEBHOOK>/${{secrets.DISCORD_CHANGES_WEBHOOK}}/g'
+      shell: bash
+    - name: Replace discord additions webhook
+      run: git grep -l '<DISCORD_ADDITIONS_WEBHOOK>' | xargs sed -i 's/<DISCORD_ADDITIONS_WEBHOOK>/${{secrets.DISCORD_ADDITIONS_WEBHOOK}}/g'
+      shell: bash
     - name: Login to Docker Hub
       uses: docker/login-action@v2
       with:
