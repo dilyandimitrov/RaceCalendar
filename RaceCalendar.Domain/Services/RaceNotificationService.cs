@@ -17,23 +17,49 @@ public class RaceNotificationService : IRaceNotificationService
 
     public Task NotifyChange(Race oldRace, Race newRace)
     {
+        var messages = new List<string>();
+
         if (newRace.StartDate != oldRace.StartDate && newRace.StartDate.HasValue)
         {
             var dateStr = GetFormattedDate(newRace.StartDate.Value);
-            var message = $"{GetRaceLink(newRace)} - нова дата - {dateStr}";
-            return _discordWebhookClient.SendMessageToRaceChangedWebhook(message);
+            messages.Add($"{GetRaceLink(newRace)} има нова дата - {dateStr}");
+        }
+
+        if (newRace.Longitude != oldRace.Longitude || 
+            newRace.Latitude != oldRace.Latitude ||
+            newRace.Distances.Any(newDistance =>
+            {
+                var oldDistance = oldRace.Distances.SingleOrDefault(oldDistance => oldDistance.Id == newDistance.Id);
+                return
+                    oldDistance?.Longitude != newDistance.Longitude ||
+                    oldDistance?.Latitude != newDistance.Latitude;
+            }))
+        {
+            messages.Add($"{GetRaceLink(newRace)} има нова начална точка на тръгване");
         }
 
         if (newRace.Cancelled == Cancelled.Cancelled && oldRace.Cancelled == 0)
         {
-            var message = $"{GetRaceLink(newRace)} е отменено";
-            return _discordWebhookClient.SendMessageToRaceChangedWebhook(message);
+            messages.Add($"{GetRaceLink(newRace)} е отменено");
         }
 
         if (oldRace.Cancelled == Cancelled.Cancelled && newRace.Cancelled == 0)
         {
-            var message = $"{GetRaceLink(newRace)} вече не е отменено";
-            return _discordWebhookClient.SendMessageToRaceChangedWebhook(message);
+            messages.Add($"{GetRaceLink(newRace)} вече не е отменено");
+        }
+
+        if (newRace.Distances.Any(newDistance =>
+        {
+            var oldDistance = oldRace.Distances.SingleOrDefault(oldDistance => oldDistance.Id == newDistance.Id);
+            return !string.IsNullOrEmpty(newDistance.ResultsLink) && oldDistance?.ResultsLink != newDistance.ResultsLink;
+        }))
+        {
+            messages.Add($"{GetRaceLink(newRace)} има добавени резултати");
+        }
+
+        if (messages.Any())
+        {
+            return _discordWebhookClient.SendMessageToRaceChangedWebhook(string.Join("\\n", messages));
         }
 
         return Task.CompletedTask;
