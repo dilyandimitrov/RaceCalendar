@@ -57,6 +57,7 @@ public class RaceRequestService : IRaceRequestService
         var existingRaces = requests
             .Where(r => r.NameId is not null)
             .Select(x => x.NameId!)
+            .Distinct()
             .ToHashSet();
         var races = await _getRacesByNameIdsQuery.Get(existingRaces);
 
