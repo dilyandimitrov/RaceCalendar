@@ -57,6 +57,15 @@ public class RaceNotificationService : IRaceNotificationService
             messages.Add($"{GetRaceLink(newRace)} има добавени резултати");
         }
 
+        if (newRace.Distances.Any(newDistance =>
+        {
+            var oldDistance = oldRace.Distances.SingleOrDefault(oldDistance => oldDistance.Id == newDistance.Id);
+            return oldDistance is null || newDistance.Distance != oldDistance.Distance;
+        }))
+        {
+            messages.Add($"{GetRaceLink(newRace)} има нова дистанция");
+        }
+
         if (messages.Any())
         {
             return _discordWebhookClient.SendMessageToRaceChangedWebhook(string.Join("\\n", messages));
