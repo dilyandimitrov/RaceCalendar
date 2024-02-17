@@ -10,6 +10,7 @@ public class EventNotificationService : IEventNotificationService
 {
     private readonly IDiscordWebhookClient _discordWebhookClient;
     private readonly IUserService _userService;
+    private const string RaceNotificationRoleId = "<@&1198666297618223184>";
 
     public EventNotificationService(
         IDiscordWebhookClient discordWebhookClient,
@@ -28,7 +29,7 @@ public class EventNotificationService : IEventNotificationService
         }
 
         var message = $"Ново груповo бягане - {GetEventLink(@event)} на {GetFormattedDate(@event.StartDate)} " +
-            $"(**{@event.CreatedByUser!.FirstName} {@event.CreatedByUser!.LastName}**)";
+            $"(**{@event.CreatedByUser!.FirstName} {@event.CreatedByUser!.LastName}**) {RaceNotificationRoleId}";
 
         await _discordWebhookClient.SendMessageToRaceAddedWebhook(message);
     }

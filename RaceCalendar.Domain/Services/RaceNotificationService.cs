@@ -9,6 +9,7 @@ namespace RaceCalendar.Domain.Services;
 public class RaceNotificationService : IRaceNotificationService
 {
     private readonly IDiscordWebhookClient _discordWebhookClient;
+    private const string RaceNotificationRoleId = "<@&1198666297618223184>";
 
     public RaceNotificationService(IDiscordWebhookClient discordWebhookClient)
     {
@@ -22,7 +23,7 @@ public class RaceNotificationService : IRaceNotificationService
         if (newRace.StartDate != oldRace.StartDate && newRace.StartDate.HasValue)
         {
             var dateStr = GetFormattedDate(newRace.StartDate.Value);
-            messages.Add($"{GetRaceLink(newRace)} има нова дата - {dateStr}");
+            messages.Add($"{GetRaceLink(newRace)} има нова дата - {dateStr} {RaceNotificationRoleId}");
         }
 
         if (newRace.Longitude != oldRace.Longitude || 
@@ -35,17 +36,17 @@ public class RaceNotificationService : IRaceNotificationService
                     oldDistance?.Latitude != newDistance.Latitude;
             }))
         {
-            messages.Add($"{GetRaceLink(newRace)} има нова начална точка на тръгване");
+            messages.Add($"{GetRaceLink(newRace)} има нова начална точка на тръгване {RaceNotificationRoleId}");
         }
 
         if (newRace.Cancelled == Cancelled.Cancelled && oldRace.Cancelled == 0)
         {
-            messages.Add($"{GetRaceLink(newRace)} е отменено");
+            messages.Add($"{GetRaceLink(newRace)} е отменено {RaceNotificationRoleId}");
         }
 
         if (oldRace.Cancelled == Cancelled.Cancelled && newRace.Cancelled == 0)
         {
-            messages.Add($"{GetRaceLink(newRace)} вече не е отменено");
+            messages.Add($"{GetRaceLink(newRace)} вече не е отменено {RaceNotificationRoleId}");
         }
 
         if (newRace.Distances.Any(newDistance =>
@@ -54,7 +55,7 @@ public class RaceNotificationService : IRaceNotificationService
             return !string.IsNullOrEmpty(newDistance.ResultsLink) && oldDistance?.ResultsLink != newDistance.ResultsLink;
         }))
         {
-            messages.Add($"{GetRaceLink(newRace)} има добавени резултати");
+            messages.Add($"{GetRaceLink(newRace)} има добавени резултати {RaceNotificationRoleId}");
         }
 
         if (newRace.Distances.Any(newDistance =>
@@ -63,7 +64,7 @@ public class RaceNotificationService : IRaceNotificationService
             return oldDistance is null || newDistance.Distance != oldDistance.Distance;
         }))
         {
-            messages.Add($"{GetRaceLink(newRace)} има нова дистанция");
+            messages.Add($"{GetRaceLink(newRace)} има нова дистанция {RaceNotificationRoleId}");
         }
 
         if (messages.Any())
@@ -76,7 +77,7 @@ public class RaceNotificationService : IRaceNotificationService
 
     public async Task NotifyNewRace(Race race)
     {
-        var message = $"Ново състезание - {GetRaceLink(race)} на {GetFormattedDate(race.StartDate!.Value)}";
+        var message = $"Ново състезание - {GetRaceLink(race)} на {GetFormattedDate(race.StartDate!.Value)} {RaceNotificationRoleId}";
         await _discordWebhookClient.SendMessageToRaceAddedWebhook(message);
     }
 
